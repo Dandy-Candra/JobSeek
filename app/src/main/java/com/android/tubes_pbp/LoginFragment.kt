@@ -1,5 +1,6 @@
 package com.android.tubes_pbp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,7 +45,8 @@ class LoginFragment : Fragment() {
 
         btnLogin.setOnClickListener {
             if(etUsername.text.toString() == "admin" && etPassword.text.toString() == "admin"){
-
+                val moveHome = Intent(activity, HomeActivity::class.java)
+                startActivity(moveHome)
             }else{
                 etUsername.error = "Username/password salah"
             }
