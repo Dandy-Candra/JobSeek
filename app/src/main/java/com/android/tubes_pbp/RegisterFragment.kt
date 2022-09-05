@@ -24,7 +24,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button : TextView = view.findViewById(R.id.buttonLogin)
+        val button : TextView = view.findViewById(R.id.btnLogin)
 
         button.setOnClickListener {
             val secondFragment = LoginFragment()
