@@ -17,4 +17,10 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_star_24"
         android:title="Favorite"/>
+
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Profile"/>
 </menu>
