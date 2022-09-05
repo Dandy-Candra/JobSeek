@@ -35,7 +35,8 @@
         android:hint="Username"
         app:boxStrokeColor="#EAE3D2"
         android:textColorHint="#EAE3D2"
-        app:hintTextColor="#1C3879">
+        app:hintTextColor="#1C3879"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputUsername"
@@ -72,7 +73,7 @@
         android:id="@+id/textForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins"
         android:text="Forgot Your Password?"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,11 +98,12 @@
 
     <Button
         android:id="@+id/btnLogin"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
         android:backgroundTint="#EAE3D2"
         android:fontFamily="@font/poppins"
+        android:padding="5dp"
         android:text="Login"
         android:textColor="#1C3879"
         android:textSize="14sp"
@@ -111,9 +113,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutPassword"
-        app:layout_constraintVertical_bias="0.01999998"
-        android:padding="5dp"
-        style="@style/Widget.Material3.Button"/>
+        app:layout_constraintVertical_bias="0.62" />
 
     <Button
         android:id="@+id/btnRegister"
