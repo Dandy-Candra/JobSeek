@@ -29,7 +29,8 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val button : TextView = view.findViewById(R.id.btnLogin)
+        val btnLogin : TextView = view.findViewById(R.id.btnLogin)
+        val btnSignUp : TextView = view.findViewById(R.id.btnSignUp)
         val txtUsername : TextInputEditText = view.findViewById(R.id.inputUsername)
         val txtPassword : TextInputEditText = view.findViewById(R.id.inputPassword)
         val txtTanggalLahir : TextInputEditText = view.findViewById(R.id.inputTanggalLahir)
@@ -39,14 +40,19 @@ class RegisterFragment : Fragment() {
         val myMonth = cal.get(Calendar.MONTH)
         val myDay = cal.get(Calendar.DAY_OF_MONTH)
 
-        button.setOnClickListener {
+        val secondFragment = LoginFragment()
+        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+        transaction.replace(R.id.layout_fragment, secondFragment)
+
+        btnLogin.setOnClickListener {
+            transaction.commit()
+        }
+
+        btnSignUp.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("username",txtUsername.text.toString())
             bundle.putString("password",txtPassword.text.toString())
-            val secondFragment = LoginFragment()
             secondFragment.arguments = bundle
-            val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.layout_fragment, secondFragment)
             transaction.commit()
         }
 
@@ -54,7 +60,7 @@ class RegisterFragment : Fragment() {
             val datePicker =
                 activity?.let { it1 ->
                     DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
-                        txtTanggalLahir.setText("${dayOfMonth} ${month} ${year}")
+                        txtTanggalLahir.setText("${dayOfMonth}/${month}/${year}")
                     },myYear,myMonth,myDay)
                 }
             if(b){
