@@ -35,6 +35,10 @@ class LoginFragment : Fragment() {
         val etPassword : TextInputEditText = view.findViewById(R.id.inputPassword)
 
 
+        etUsername.setText(arguments?.getString("username"))
+        etPassword.setText(arguments?.getString("password"))
+
+
 
         button.setOnClickListener {
             val secondFragment = RegisterFragment()
@@ -48,7 +52,7 @@ class LoginFragment : Fragment() {
                 val moveHome = Intent(activity, HomeActivity::class.java)
                 startActivity(moveHome)
             }else{
-                etUsername.error = "Username/password salah"
+                etUsername.error ="Username / Password salah"
             }
         }
     }
