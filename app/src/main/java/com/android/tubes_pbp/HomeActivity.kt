@@ -1,17 +1,22 @@
 package com.android.tubes_pbp
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var btnLogout: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val navView : NavigationBarView = findViewById(R.id.bottom_navigation)
+
 
         navView.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -28,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.profile -> {
-                    println("ini Profile")
+                    changeFragment(ProfileFragment())
                     true
                 }
                 else -> false
