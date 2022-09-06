@@ -14,8 +14,7 @@ class lowongan(var name: String, var detail: String, var photo: Int) {
             lowongan("Security Engineer","Menguasai tentang keamanan sistem, Min. Pendidikan S1 Teknik Informatika", R.drawable.cyber_security_engineer),
             lowongan("System Analyst", "Memiliki analisa dan basic programing yang kuat, Min. Pendidikan S1 Teknik Informatika", R.drawable.system_analyst),
             lowongan("Hardware Engineer", "Memiliki skill dalam arsitektur komputer, Min. Pendidikan SMA/SMK/Sederajat", R.drawable.computer_hardware_engineer),
-            lowongan("Network Engineer", "Memahami OSI layer, Min. Pendidikan S1 Teknik Informatika", R.drawable.network_enginer),
+            lowongan("Network Engineer", "Memahami OSI layer, Min. Pendidikan S1 Teknik Informatika", R.drawable.network_enginer)
             )
-
     }
 }
