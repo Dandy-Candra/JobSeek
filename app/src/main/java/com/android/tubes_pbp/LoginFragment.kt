@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
                 val moveHome = Intent(activity, HomeActivity::class.java)
                 startActivity(moveHome)
             }else{
-                etUsername.error = "Username/password salah"
+                etUsername.setError("Username / password salah")
             }
         }
     }
