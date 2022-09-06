@@ -3,46 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        style="?attr/materialCardViewFilledStyle">
+        android:layout_margin="8dp">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-        <!-- Title, secondary and supporting text -->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="194dp"
-            tools:src="@tools:sample/avatars" />
+            <!-- Title, secondary and supporting text -->
+            <ImageView
+                android:id="@+id/tv_image"
+                android:layout_width="match_parent"
+                android:layout_height="194dp"
+                tools:src="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/tv_judul"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Halo"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    />
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
                 <TextView
+                    android:id="@+id/tv_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Tes"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+                    android:textColor="?android:attr/textColorSecondary" />
             </LinearLayout>
 
 

@@ -2,6 +2,7 @@ package com.android.tubes_pbp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 
 class HomeActivity : AppCompatActivity() {
@@ -15,7 +16,7 @@ class HomeActivity : AppCompatActivity() {
         navView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.home -> {
-                    println("ini Home")
+                    changeFragment(FragmentLowongan())
                     true
                 }
                 R.id.search -> {
@@ -32,6 +33,12 @@ class HomeActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+    }
+
+    fun changeFragment(fragment: Fragment?){
+        if(fragment!=null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.layout_fragment, fragment).commit()
         }
     }
 
