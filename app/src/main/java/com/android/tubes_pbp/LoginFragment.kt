@@ -32,6 +32,8 @@ class LoginFragment : Fragment() {
         val button : Button = view.findViewById(R.id.btnRegister)
         val btnLogin : Button = view.findViewById(R.id.btnLogin)
         val etUsername : TextInputEditText = view.findViewById(R.id.inputUsername)
+        val layoutUsername : TextInputLayout = view.findViewById(R.id.layoutUsername)
+        val layoutPassword : TextInputLayout = view.findViewById(R.id.layoutPassword)
         val etPassword : TextInputEditText = view.findViewById(R.id.inputPassword)
 
         etUsername.setText(arguments?.getString("username"))
@@ -49,7 +51,14 @@ class LoginFragment : Fragment() {
                 val moveHome = Intent(activity, HomeActivity::class.java)
                 startActivity(moveHome)
             }else{
-                etUsername.setError("Username / password salah")
+                if(etUsername.text.toString().isEmpty()){
+                    layoutUsername.setError("Username Harus Diisi")
+                }
+
+                if(etPassword.text.toString().isEmpty()){
+                    layoutPassword.setError("Password Harus Diisi")
+                }
+
             }
         }
     }
