@@ -16,6 +16,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val navView : NavigationBarView = findViewById(R.id.bottom_navigation)
+        changeFragment(FragmentLowongan())
 
 
         navView.setOnItemSelectedListener { item ->
