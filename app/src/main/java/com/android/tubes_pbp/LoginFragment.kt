@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +33,8 @@ class LoginFragment : Fragment() {
         val btnLogin : Button = view.findViewById(R.id.btnLogin)
         val etUsername : TextInputEditText = view.findViewById(R.id.inputUsername)
         val etPassword : TextInputEditText = view.findViewById(R.id.inputPassword)
+
+
 
         button.setOnClickListener {
             val secondFragment = RegisterFragment()
@@ -49,4 +52,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
+
+
 }
