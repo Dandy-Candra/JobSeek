@@ -34,7 +34,8 @@ class LoginFragment : Fragment() {
         val etUsername : TextInputEditText = view.findViewById(R.id.inputUsername)
         val etPassword : TextInputEditText = view.findViewById(R.id.inputPassword)
 
-
+        etUsername.setText(arguments?.getString("username"))
+        etPassword.setText(arguments?.getString("password"))
 
         button.setOnClickListener {
             val secondFragment = RegisterFragment()
