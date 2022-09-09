@@ -26,11 +26,11 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.search -> {
-                    println("ini Search")
+                    changeFragment(SearchFragment())
                     true
                 }
                 R.id.favorite -> {
-                    println("ini Favorite")
+                    changeFragment(FavoriteFragment())
                     true
                 }
                 R.id.profile -> {

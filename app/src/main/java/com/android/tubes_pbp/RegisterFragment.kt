@@ -39,6 +39,12 @@ class RegisterFragment : Fragment() {
         val myYear = cal.get(Calendar.YEAR)
         val myMonth = cal.get(Calendar.MONTH)
         val myDay = cal.get(Calendar.DAY_OF_MONTH)
+        val txtEmail : TextInputEditText = view.findViewById(R.id.inputEmail)
+        val txtNoTelp : TextInputEditText = view.findViewById(R.id.inputNomorTelepon)
+        val layoutUsername : TextInputLayout = view.findViewById(R.id.layoutUsername)
+        val layoutPassword : TextInputLayout = view.findViewById(R.id.layoutPassword)
+        val layoutNoTelp : TextInputLayout = view.findViewById(R.id.layoutNomorTelepon)
+        val layoutEmail : TextInputLayout = view.findViewById(R.id.layoutEmail)
 
         val secondFragment = LoginFragment()
         val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
@@ -49,11 +55,30 @@ class RegisterFragment : Fragment() {
         }
 
         btnSignUp.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("username",txtUsername.text.toString())
-            bundle.putString("password",txtPassword.text.toString())
-            secondFragment.arguments = bundle
-            transaction.commit()
+            if (!txtUsername.text.toString().isEmpty() && !txtPassword.text.toString().isEmpty() && !txtTanggalLahir.text.toString().isEmpty() &&
+            !txtEmail.text.toString().isEmpty() && !txtNoTelp.text.toString().isEmpty()){
+                val bundle = Bundle()
+                bundle.putString("username",txtUsername.text.toString())
+                bundle.putString("password",txtPassword.text.toString())
+                secondFragment.arguments = bundle
+                transaction.commit()
+            } else {
+                if (txtUsername.text.toString().isEmpty()){
+                    layoutUsername.setError("Username Harus Diisi")
+                }
+                if (txtPassword.text.toString().isEmpty()){
+                    layoutPassword.setError("Password Harus Diisi")
+                }
+                if (txtTanggalLahir.text.toString().isEmpty()){
+                    layoutTanggalLahir.setError("Tanggal Lahir Harus Diiisi")
+                }
+                if (txtEmail.text.toString().isEmpty()){
+                    layoutEmail.setError("Email Harus Diisi")
+                }
+                if (txtNoTelp.text.toString().isEmpty()){
+                    layoutNoTelp.setError("Nomor Telp Harus Diiisi")
+                }
+            }
         }
 
         txtTanggalLahir.setOnFocusChangeListener { view, b ->
@@ -72,8 +97,6 @@ class RegisterFragment : Fragment() {
 
         }
     }
-
-
 }
 
 
