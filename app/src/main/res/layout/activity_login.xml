@@ -7,20 +7,16 @@
     tools:context=".MainActivity"
     android:padding="120px">
 
-    <TextView
+    <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins"
-        android:text="LOGO"
-        android:textColor="#1C3879"
-        android:textSize="24sp"
+        android:layout_width="320dp"
+        android:layout_height="198dp"
+        android:src="@drawable/logopbp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.17000002"
-        android:textStyle="bold"/>
+        app:layout_constraintVertical_bias="0.17000002" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutUsername"

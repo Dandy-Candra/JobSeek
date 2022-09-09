@@ -22,7 +22,9 @@
             <ImageView
                 android:id="@+id/tv_image"
                 android:layout_width="match_parent"
-                android:layout_height="194dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 tools:src="@tools:sample/avatars" />
 
             <LinearLayout
@@ -35,14 +37,17 @@
                     android:id="@+id/tv_judul"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="Halo"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="#1C3879"/>
 
                 <TextView
                     android:id="@+id/tv_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins"
                     android:text="Tes"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary" />

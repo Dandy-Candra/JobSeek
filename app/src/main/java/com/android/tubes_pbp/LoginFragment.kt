@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
         }
 
         btnLogin.setOnClickListener {
-            if(etUsername.text.toString() == "admin" && etPassword.text.toString() == "admin"){
+            if((etUsername.text.toString() == "admin" && etPassword.text.toString() == "admin") || etUsername.text.toString() == arguments?.getString("username") && etPassword.text.toString() == arguments?.getString("password")){
                 val moveHome = Intent(activity, HomeActivity::class.java)
                 startActivity(moveHome)
             }else{
@@ -56,6 +56,8 @@ class LoginFragment : Fragment() {
                 if(etPassword.text.toString().isEmpty()){
                     layoutPassword.setError("Password Harus Diisi")
                 }
+
+
 
             }
         }
