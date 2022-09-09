@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Tubes_PBP" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">#1C3879</item>
+        <item name="colorPrimaryVariant">#1C3879</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +12,29 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+        <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
+
+    </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
+    </style>
+
+
+    <style name="ThemeOverlay.App.Card" parent="">
+        <item name="colorSurfaceVariant">#EAE3D2</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorSurface">#EAE3D2</item>
+        <item name="colorOnSurfaceVariant">#1C3879</item>
+        <item name="colorOnSecondaryContainer">#1C3879</item>
+        <item name="colorPrimary">#FFF8E6</item>
+        <item name="android:fontFamily">@font/poppins</item>
     </style>
 </resources>
