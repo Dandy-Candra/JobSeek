@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
-        android:background="@drawable/backgorundicon"
+        android:layout_height="180dp"
+        android:src="@drawable/backgorundicon"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -25,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.26">
+        app:layout_constraintVertical_bias="0.120000005">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -37,12 +39,12 @@
             android:textColorHint="#EAE3D2"
             app:boxStrokeColor="#EAE3D2"
             app:hintTextColor="#1C3879"
-            app:startIconDrawable="@drawable/ic_baseline_person_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:startIconDrawable="@drawable/ic_baseline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputUsername"
@@ -61,12 +63,12 @@
             android:textColorHint="#EAE3D2"
             app:boxStrokeColor="#EAE3D2"
             app:hintTextColor="#1C3879"
-            app:startIconDrawable="@drawable/ic_baseline_email_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutUsername"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:startIconDrawable="@drawable/ic_baseline_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputEmail"
@@ -86,12 +88,12 @@
             app:boxStrokeColor="#EAE3D2"
             app:endIconMode="password_toggle"
             app:hintTextColor="#1C3879"
-            app:startIconDrawable="@drawable/ic_lock_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:startIconDrawable="@drawable/ic_lock_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputPassword"
@@ -111,12 +113,12 @@
             android:textColorHint="#EAE3D2"
             app:boxStrokeColor="#EAE3D2"
             app:hintTextColor="#1C3879"
-            app:startIconDrawable="@drawable/ic_baseline_date_range_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutPassword"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:startIconDrawable="@drawable/ic_baseline_date_range_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputTanggalLahir"
@@ -135,12 +137,12 @@
             android:textColorHint="#EAE3D2"
             app:boxStrokeColor="#EAE3D2"
             app:hintTextColor="#1C3879"
-            app:startIconDrawable="@drawable/ic_baseline_phone_iphone_24"
             app:layout_constraintBottom_toTopOf="@id/btnSignUp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutTanggalLahir"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:startIconDrawable="@drawable/ic_baseline_phone_iphone_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputNomorTelepon"
@@ -165,7 +167,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutTanggalLahir"
-            app:layout_constraintVertical_bias="0.65" />
+            app:layout_constraintVertical_bias="0.61" />
 
         <TextView
             android:id="@+id/txtAcnt"
