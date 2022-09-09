@@ -51,10 +51,14 @@ class LoginFragment : Fragment() {
             }else{
                 if(etUsername.text.toString().isEmpty()){
                     layoutUsername.setError("Username Harus Diisi")
+                }else{
+                    layoutUsername.setError("Username Salah")
                 }
 
                 if(etPassword.text.toString().isEmpty()){
                     layoutPassword.setError("Password Harus Diisi")
+                }else{
+                    layoutPassword.setError("Password Salah")
                 }
 
 
