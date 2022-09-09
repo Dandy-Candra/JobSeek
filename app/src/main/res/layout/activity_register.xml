@@ -20,11 +20,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="309dp"
-        android:layout_height="508dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.26">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -40,13 +41,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.060000002">
+            app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"/>
+                android:fontFamily="@font/poppins" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -69,7 +70,7 @@
                 android:id="@+id/inputEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"/>
+                android:fontFamily="@font/poppins" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -93,8 +94,8 @@
                 android:id="@+id/inputPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:fontFamily="@font/poppins"/>
+                android:fontFamily="@font/poppins"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -117,7 +118,7 @@
                 android:id="@+id/inputTanggalLahir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"/>
+                android:fontFamily="@font/poppins" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -130,54 +131,56 @@
             android:textColorHint="#EAE3D2"
             app:boxStrokeColor="#EAE3D2"
             app:hintTextColor="#1C3879"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintTop_toBottomOf="@+id/layoutTanggalLahir"
             app:layout_constraintBottom_toTopOf="@id/btnSignUp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutTanggalLahir"
+            app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputNomorTelepon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnSignUp"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#EAE3D2"
+            android:fontFamily="@font/poppins"
             android:text="Sign Up"
+            android:textColor="#1C3879"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutTanggalLahir"
-            android:backgroundTint="#EAE3D2"
-            android:textColor="#1C3879"
-            style="@style/Widget.Material3.Button"
-            android:fontFamily="@font/poppins"/>
+            app:layout_constraintVertical_bias="0.65" />
 
         <TextView
             android:id="@+id/txtAcnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
             android:text="Have an Account? "
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnSignUp"
-            app:layout_constraintVertical_bias="0.07999998"
-            android:fontFamily="@font/poppins"/>
+            app:layout_constraintVertical_bias="0.07999998" />
 
         <TextView
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:fontFamily="@font/poppins"
             android:text="Login"
             android:textColor="#1C3879"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -185,8 +188,7 @@
             app:layout_constraintHorizontal_bias="0.02"
             app:layout_constraintStart_toEndOf="@+id/txtAcnt"
             app:layout_constraintTop_toTopOf="@+id/txtAcnt"
-            app:layout_constraintVertical_bias="0.0"
-            android:fontFamily="@font/poppins"/>
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
