@@ -22,9 +22,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.activity_login, container, false)
-
-        return v
+        return inflater.inflate(R.layout.activity_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
