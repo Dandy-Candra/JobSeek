@@ -85,7 +85,7 @@ class RegisterFragment : Fragment() {
             val datePicker =
                 activity?.let { it1 ->
                     DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
-                        txtTanggalLahir.setText("${dayOfMonth}/${month}/${year}")
+                        txtTanggalLahir.setText("${dayOfMonth}/${(month.toInt() + 1).toString()}/${year}")
                     },myYear,myMonth,myDay)
                 }
             if(b){

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:padding="120px">
+    android:paddingTop="120px"
+    android:paddingLeft="120px"
+    android:paddingRight="120px">
 
     <ImageView
         android:id="@+id/logo"
