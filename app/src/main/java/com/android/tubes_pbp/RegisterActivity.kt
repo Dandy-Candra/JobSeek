@@ -6,11 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
+import com.android.tubes_pbp.user.TubesDB
+import com.android.tubes_pbp.user.User
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
+    val db by lazy { TubesDB(this) }
+    private var userId: Int = 0
     private lateinit var binding: ActivityRegisterBinding
 
 
@@ -39,6 +46,16 @@ class RegisterActivity : AppCompatActivity() {
                 bundle.putString("username",binding.inputUsername.text.toString())
                 bundle.putString("password",binding.inputPassword.text.toString())
                 intent.putExtra("registerBundle",bundle)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.userDao().addUser(
+                        User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
+                            binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()  )
+                    )
+                    finish()
+                }
+
+
                 startActivity(intent)
             } else {
                 if (binding.inputUsername.text.toString().isEmpty()){

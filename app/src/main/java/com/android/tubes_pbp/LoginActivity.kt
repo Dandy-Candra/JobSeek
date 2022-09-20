@@ -7,15 +7,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
+import com.android.tubes_pbp.user.TubesDB
+import com.android.tubes_pbp.user.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
+    val db by lazy { TubesDB(this) }
     private lateinit var binding: ActivityLoginBinding
     lateinit var lBundle : Bundle
 
+//    private lateinit var users : List<User>
     private val myPreference = "myPref"
     private val key = "nameKey"
+    private var access = false
     var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+        val moveHome = Intent(this, HomeActivity::class.java)
         if(intent.getBundleExtra("registerBundle")!=null){
             println("masukkk")
             lBundle = intent.getBundleExtra("registerBundle")!!
@@ -52,26 +63,49 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
-            if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin")){
-                val moveHome = Intent(this, HomeActivity::class.java)
-                startActivity(moveHome)
-                finishAndRemoveTask()
-            }else{
-                if(binding.inputUsername.text.toString().isEmpty()){
-                    binding.layoutUsername.setError("Username Harus Diisi")
-                }else{
-                    binding.layoutUsername.setError("Username Salah")
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val users = db.userDao().getUsers()
+                Log.d("LoginActivity","dbResponse: $users")
+
+                for(i in users){
+                    if(binding.inputUsername.text.toString() == i.username && binding.inputPassword.text.toString() == i.password){
+                        println("masukk")
+                        access = true
+                        println(access)
+                        break
+                    }
                 }
 
-                if(binding.inputPassword.text.toString().isEmpty()){
-                    binding.layoutPassword.setError("Password Harus Diisi")
-                }else{
-                    binding.layoutPassword.setError("Password Salah")
+                withContext(Dispatchers.Main){
+                    if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){
+                        access = false
+
+                        startActivity(moveHome)
+                    }else{
+                        if(binding.inputUsername.text.toString().isEmpty()){
+                            binding.layoutUsername.setError("Username Harus Diisi")
+                        }else{
+                            binding.layoutUsername.setError("Username Salah")
+                        }
+
+                        if(binding.inputPassword.text.toString().isEmpty()){
+                            binding.layoutPassword.setError("Password Harus Diisi")
+                        }else{
+                            binding.layoutPassword.setError("Password Salah")
+                        }
+
+
+
+                    }
                 }
 
 
 
             }
+
+
+
         }
 
     }
