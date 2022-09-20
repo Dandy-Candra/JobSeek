@@ -25,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
 //    private lateinit var users : List<User>
     private val myPreference = "myPref"
     private val key = "nameKey"
+    private val id = "idKey"
     private var access = false
     var sharedPreferences: SharedPreferences? = null
 
@@ -52,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
 
         val moveHome = Intent(this, HomeActivity::class.java)
         if(intent.getBundleExtra("registerBundle")!=null){
-            println("masukkk")
             lBundle = intent.getBundleExtra("registerBundle")!!
             binding.inputUsername.setText(lBundle.getString("username"))
             binding.inputPassword.setText(lBundle.getString("password"))
@@ -70,7 +70,9 @@ class LoginActivity : AppCompatActivity() {
 
                 for(i in users){
                     if(binding.inputUsername.text.toString() == i.username && binding.inputPassword.text.toString() == i.password){
-                        println("masukk")
+                        val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                        editor.putString(id, i.id.toString())
+                        editor.apply()
                         access = true
                         println(access)
                         break
