@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 
@@ -12,14 +14,31 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     lateinit var lBundle : Bundle
 
+    private val myPreference = "myPref"
+    private val key = "nameKey"
+    var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
 
+        sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
-        setContentView(view)
+
+        if(!sharedPreferences!!.contains(key)){
+            val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+            editor.putString(key, "terisi")
+            editor.apply()
+            setContentView(R.layout.activity_splash_screen)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                setContentView(view)
+            }, 3000)
+        }else{
+            setContentView(view)
+        }
+
 
         if(intent.getBundleExtra("registerBundle")!=null){
             println("masukkk")
@@ -36,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
             if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin")){
                 val moveHome = Intent(this, HomeActivity::class.java)
                 startActivity(moveHome)
+                finishAndRemoveTask()
             }else{
                 if(binding.inputUsername.text.toString().isEmpty()){
                     binding.layoutUsername.setError("Username Harus Diisi")
