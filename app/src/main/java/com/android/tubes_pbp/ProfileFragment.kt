@@ -12,13 +12,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentTransaction
+import com.android.tubes_pbp.user.TubesDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
-
+    val db by lazy { activity?.let { TubesDB(it) } }
     private val id = "idKey"
     private val myPreference = "myPref"
     var sharedPreferences: SharedPreferences? = null
@@ -35,8 +39,10 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnLogOut : Button = view.findViewById(R.id.btnLogout)
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-        textView.setText(sharedPreferences!!.getString(id,"")!!)
 
+        CoroutineScope(Dispatchers.IO).launch {
+            val user = db?.userDao()?.getUser(sharedPreferences!!.getString(id,"")!!.toInt())?.get(0)
+        }
 
         btnLogOut.setOnClickListener {
             activity?.let { it1 ->
