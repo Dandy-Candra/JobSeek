@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [User::class],
+    entities = [User::class,Experience::class],
     version = 1
 )
 abstract class TubesDB: RoomDatabase() {
