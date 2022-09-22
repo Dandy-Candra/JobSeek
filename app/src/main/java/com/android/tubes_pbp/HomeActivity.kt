@@ -37,6 +37,10 @@ class HomeActivity : AppCompatActivity() {
                     changeFragment(ProfileFragment())
                     true
                 }
+                R.id.experience ->{
+                    changeFragment(SkillFragment())
+                    true
+                }
                 else -> false
             }
         }

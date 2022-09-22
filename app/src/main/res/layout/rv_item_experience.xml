@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,37 +15,40 @@
         android:clickable="true">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- Title, secondary and supporting text -->
-            <ImageView
-                android:id="@+id/tv_image"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tv_judul"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Halo"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="#1C3879"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Halo"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="#1C3879"
+                        android:layout_alignParentLeft="true"/>
+
+                    <ImageView
+                        android:id="@+id/tv_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="tess"
+                        android:src="@drawable/ic_baseline_edit_24"
+                        android:layout_alignParentRight="true"
+                        />
+                </RelativeLayout>
+
+
 
                 <TextView
-                    android:id="@+id/tv_details"
+                    android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -54,8 +58,6 @@
                     android:textColor="?android:attr/textColorSecondary" />
             </LinearLayout>
 
-
-        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
