@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentTransaction
+import com.android.tubes_pbp.databinding.FragmentProfileBinding
+import com.android.tubes_pbp.databinding.FragmentSkillBinding
 import com.android.tubes_pbp.user.TubesDB
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -26,13 +28,16 @@ class ProfileFragment : Fragment() {
     private val id = "idKey"
     private val myPreference = "myPref"
     var sharedPreferences: SharedPreferences? = null
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +47,10 @@ class ProfileFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val user = db?.userDao()?.getUser(sharedPreferences!!.getString(id,"")!!.toInt())?.get(0)
+            binding.username.setText(user?.username)
+            binding.email.setText(user?.email)
+            binding.noTelp.setText(user?.noTelp)
+            binding.tglLahir.setText(user?.date)
         }
 
         btnLogOut.setOnClickListener {

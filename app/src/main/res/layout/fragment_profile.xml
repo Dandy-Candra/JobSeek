@@ -1,166 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
-    //comment
-    <ImageView
-        android:id="@+id/constraintLayout"
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:src="@drawable/backgroundProfile"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/iconProfile"
-        app:layout_constraintBottom_toTopOf="@+id/layout1"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.constraintlayout.utils.widget.ImageFilterView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout1"
-        android:layout_width="309dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/box"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutUsername"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="307dp"
+        <LinearLayout
+            android:paddingTop="25dp"
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:textColorHint="#EAE3D2"
-            app:boxStrokeColor="#EAE3D2"
-            app:hintTextColor="#1C3879"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:startIconDrawable="@drawable/ic_baseline_person_24">
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:layout_marginLeft="40dp"
+            >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputUsername"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="25sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#1C3879"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/Image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/img" />
+
+
+
+            <TextView
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="DandyCandra"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#EAE3D2"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="307dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:hint="Email"
-            android:textColorHint="#EAE3D2"
-            app:boxStrokeColor="#EAE3D2"
-            app:hintTextColor="#1C3879"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutUsername"
-            app:layout_constraintVertical_bias="0.0"
-            app:startIconDrawable="@drawable/ic_baseline_email_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputEmail"
+            <TextView
+                android:layout_marginTop="15dp"
+                android:id="@+id/editProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutTanggalLahir"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="307dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:hint="Tanggal Lahir"
-            android:textColorHint="#EAE3D2"
-            app:boxStrokeColor="#EAE3D2"
-            app:hintTextColor="#1C3879"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
-            app:layout_constraintVertical_bias="0.0"
-            app:startIconDrawable="@drawable/ic_baseline_date_range_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputTanggalLahir"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutNomorTelepon"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="307dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:hint="Nomor Telepon"
-            android:textColorHint="#EAE3D2"
-            app:boxStrokeColor="#EAE3D2"
-            app:hintTextColor="#1C3879"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutTanggalLahir"
-            app:layout_constraintVertical_bias="0.0"
-            app:startIconDrawable="@drawable/ic_baseline_phone_iphone_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputNomorTelepon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:gravity="center_horizontal"
                 android:fontFamily="@font/poppins"
-                android:inputType="numberDecimal" />
+                android:textColor="#EAE3D2"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="309dp"
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.120000005">
+        android:orientation="vertical">
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_baseline_email_24"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#1C3879"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="dandycandra13@gmail.com"
+                    android:textColor="#656565"/>
+
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_baseline_phone_iphone_24"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No Telepon"
+                    android:textColor="#1C3879"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/noTelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="082221878123"
+                    android:textColor="#656565"
+                   />
+
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_baseline_date_range_24"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Lahiir"
+                    android:textColor="#1C3879"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/tglLahir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20/9/2022"
+                    android:textColor="#656565"/>
+
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log Out"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.917" />
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="#EAE3D2"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
