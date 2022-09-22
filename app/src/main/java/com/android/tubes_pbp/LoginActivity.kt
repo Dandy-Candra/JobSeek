@@ -22,7 +22,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     lateinit var lBundle : Bundle
 
-//    private lateinit var users : List<User>
     private val myPreference = "myPref"
     private val key = "nameKey"
     private val id = "idKey"
@@ -74,7 +73,6 @@ class LoginActivity : AppCompatActivity() {
                         editor.putString(id, i.id.toString())
                         editor.apply()
                         access = true
-                        println(access)
                         break
                     }
                 }
