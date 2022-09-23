@@ -12,6 +12,7 @@ import androidx.room.RoomDatabase
 abstract class TubesDB: RoomDatabase() {
 
     abstract fun userDao() : UserDao
+    abstract fun experienceDao() : ExperienceDao
 
     companion object {
         @Volatile private var instance : TubesDB? = null
