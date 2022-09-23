@@ -1,5 +1,7 @@
 package com.android.tubes_pbp
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,6 +23,9 @@ import kotlinx.coroutines.withContext
 
 class SkillFragment : Fragment() {
     val db by lazy { activity?.let { TubesDB(it) } }
+    private val id = "idKey"
+    private val myPreference = "myPref"
+    var sharedPreferences: SharedPreferences? = null
     private var _binding: FragmentSkillBinding? = null
     private val binding get() = _binding!!
 
@@ -35,6 +40,8 @@ class SkillFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
+        val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
         val bundle = Bundle()
         val secondFragment = InputExperienceFragment()
         val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
@@ -62,7 +69,7 @@ class SkillFragment : Fragment() {
 
         rvLowongan.adapter = adapter
         CoroutineScope(Dispatchers.IO).launch {
-            val experiences = db?.experienceDao()?.getExperiences()
+            val experiences = db?.experienceDao()?.getExperiencesById(idUser)
             Log.d("MainActivity","dbResponse: $experiences")
             withContext(Dispatchers.Main){
                 adapter.setData(experiences!!)

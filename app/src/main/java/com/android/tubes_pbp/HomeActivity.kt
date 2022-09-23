@@ -19,7 +19,14 @@ class HomeActivity : AppCompatActivity() {
 
         val navView : NavigationBarView = findViewById(R.id.bottom_navigation)
 
-        changeFragment(FragmentLowongan())
+        if(intent.getBundleExtra("keyBundle")!=null){
+            navView.selectedItemId = R.id.profile
+            layout_fragment.setPadding(0,0,0,0)
+            changeFragment(ProfileFragment())
+        }else{
+            changeFragment(FragmentLowongan())
+        }
+
         val left = layout_fragment.paddingLeft
         val right = layout_fragment.paddingRight
 

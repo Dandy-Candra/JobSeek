@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentTransaction
 import com.android.tubes_pbp.databinding.ActivityEditBinding
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
 import com.android.tubes_pbp.user.TubesDB
@@ -33,14 +34,18 @@ class EditActivity : AppCompatActivity() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem->
             when(menuItem.itemId){
                 R.id.Save -> {
-                    println("mashok")
                     CoroutineScope(Dispatchers.IO).launch {
                         val user = db?.userDao()?.updateUser(User(id,binding.inputUsername.text.toString()
                             ,binding.inputEmail.text.toString(),binding.inputPassword.text.toString(),
                         binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()))
                     }
                     finish()
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    val intent = Intent(this, HomeActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("key","iniTerisi")
+                    intent.putExtra("keyBundle",bundle)
+                    startActivity(intent)
+
                     true
                 }
                 else -> false

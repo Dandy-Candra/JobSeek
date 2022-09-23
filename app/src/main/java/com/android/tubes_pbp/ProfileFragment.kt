@@ -69,6 +69,8 @@ class ProfileFragment : Fragment() {
                         // Respond to negative button press
                     }
                     .setPositiveButton("yes") { dialog, which ->
+                        val moveLogin = Intent(activity, LoginActivity::class.java)
+                        startActivity(moveLogin)
                         activity?.finish()
                     }
                     .show()

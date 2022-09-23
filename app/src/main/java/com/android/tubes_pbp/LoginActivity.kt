@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
                         access = false
 
                         startActivity(moveHome)
+                        finish()
                     }else{
                         if(binding.inputUsername.text.toString().isEmpty()){
                             binding.layoutUsername.setError("Username Harus Diisi")
