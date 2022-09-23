@@ -51,7 +51,15 @@ class ProfileFragment : Fragment() {
             binding.email.setText(user?.email)
             binding.noTelp.setText(user?.noTelp)
             binding.tglLahir.setText(user?.date)
+
+            binding.editProfile.setOnClickListener {
+                val moveEdit = Intent(activity, EditActivity::class.java)
+                startActivity(moveEdit)
+                activity?.finish()
+            }
         }
+
+
 
         btnLogOut.setOnClickListener {
             activity?.let { it1 ->
