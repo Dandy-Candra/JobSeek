@@ -1,10 +1,20 @@
 package com.android.tubes_pbp
 
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
@@ -19,6 +29,9 @@ class RegisterActivity : AppCompatActivity() {
     val db by lazy { TubesDB(this) }
     private var userId: Int = 0
     private lateinit var binding: ActivityRegisterBinding
+
+    private val CHANNEL_ID_REGISTER = "channel_notification_01"
+    private val notificationId1 = 101
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +67,10 @@ class RegisterActivity : AppCompatActivity() {
                     )
                     finish()
                 }
+
+                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
+                createNotificationChannel()
+                sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
 
 
                 startActivity(intent)
@@ -92,5 +109,58 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Register"
+            val descriptionText = "Notification Description"
+
+            val channel1 = NotificationChannel(CHANNEL_ID_REGISTER,name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description = descriptionText
+            }
+
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel1)
+        }
+    }
+
+    private fun sendNotification1(username: String, bitmap : Bitmap){
+        val intent : Intent = Intent (this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+        val broadcastIntent : Intent = Intent(this, NotificationReceiver::class.java)
+        broadcastIntent.putExtra("toastMessage","Halo " + username + " Kamu Berhasil Registrasi")
+        val actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID_REGISTER)
+            .setSmallIcon(R.drawable.ic_baseline_arrow_back_24)
+            .setContentTitle("Registrasi Berhasil")
+            .setContentText("Halo " + username + " Kamu Berhasil Registrasi")
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setColor(Color.BLUE)
+            .setAutoCancel(true)
+            .setOnlyAlertOnce(true)
+            .setContentIntent(pendingIntent)
+            .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+
+
+
+        with(NotificationManagerCompat.from(this)){
+            notify(notificationId1, builder.build())
+        }
+
+
+
+    }
+
+
+
 
 }
