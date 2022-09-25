@@ -23,7 +23,7 @@ class ExperienceAdapter (private val experiences: ArrayList<Experience>, private
         val experience = experiences[position]
         holder.view.tv_title.text = experience.title
         holder.view.tv_description.text = experience.description
-        holder.view.card.setOnClickListener {
+        holder.view.card_skill.setOnClickListener {
             listener.onClick(experience)
         }
         holder.view.tv_edit.setOnClickListener {

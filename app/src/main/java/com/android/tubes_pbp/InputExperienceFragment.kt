@@ -1,12 +1,20 @@
 package com.android.tubes_pbp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.getSystemService
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +35,8 @@ class InputExperienceFragment : Fragment() {
     var sharedPreferences: SharedPreferences? = null
     private var _binding: FragmentInputExperienceBinding? = null
     private val binding get() = _binding!!
+    private val CHANNEL_ID_SAVE = "channel_notification_save"
+    private val notificationId = 103
 
 
 
@@ -41,6 +51,7 @@ class InputExperienceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        createNotificationChannel()
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
         if(arguments?.getString("key")=="update"){
@@ -81,6 +92,7 @@ class InputExperienceFragment : Fragment() {
                     db?.experienceDao()?.addExperience(Experience(0,binding.editTitle.text.toString(),binding.editDescription.text.toString(),idUser))
 
                     withContext(Dispatchers.Main){
+                        sendNotification2(binding.editTitle.text.toString(),binding.editDescription.text.toString())
                         val secondFragment = SkillFragment()
                         val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
                         transaction.replace(R.id.layout_fragment, secondFragment)
@@ -90,5 +102,39 @@ class InputExperienceFragment : Fragment() {
             }
         }
     }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification Save"
+            val descriptionText = "Notification Description"
+
+            val channel1 = NotificationChannel(CHANNEL_ID_SAVE,name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description = descriptionText
+            }
+
+
+            val notificationManager: NotificationManager =
+                activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel1)
+        }
+    }
+
+    private fun sendNotification2(title : String, description : String){
+
+        val builder = NotificationCompat.Builder(this.requireActivity(), CHANNEL_ID_SAVE)
+            .setSmallIcon(R.drawable.ic_baseline_info_24)
+            .setContentTitle("Berhasil Menyimpan Experience!")
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setColor(Color.BLUE)
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(description)
+                .setBigContentTitle(title)
+                .setSummaryText("Save Succes"))
+
+        with(NotificationManagerCompat.from(this.requireActivity())){
+            notify(notificationId, builder.build())
+        }
+    }
+
 
 }
