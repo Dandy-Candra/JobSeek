@@ -17,9 +17,6 @@
             android:name=".EditActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
@@ -37,6 +34,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".JobSeekFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGINF_EVENT"/>
+            </intent-filter>
+        </service>
         <receiver android:name=".NotificationReceiver"/>
     </application>
 
