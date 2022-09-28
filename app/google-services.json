@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "36122137579",
-    "project_id": "tubes-pbp-1ce55",
-    "storage_bucket": "tubes-pbp-1ce55.appspot.com"
+    "project_number": "1018125988126",
+    "project_id": "tubes-pbp-d27a8",
+    "storage_bucket": "tubes-pbp-d27a8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:36122137579:android:5e8d326eb170eb2e5bbfae",
+        "mobilesdk_app_id": "1:1018125988126:android:c6ebe73492a93f9dfb990f",
         "android_client_info": {
           "package_name": "com.android.tubes_pbp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "36122137579-iatclodgf3e4cn44iascon9tjo37mb4c.apps.googleusercontent.com",
+          "client_id": "1018125988126-db3vp1r5q0fqs691afurtdund9bsqk12.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB84hPo6sfaivn60pj36BSt7Tebll_xdxY"
+          "current_key": "AIzaSyDwyHo8RD47RXm_JIXRYrQhBmGpFAagn0E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "36122137579-iatclodgf3e4cn44iascon9tjo37mb4c.apps.googleusercontent.com",
+              "client_id": "1018125988126-db3vp1r5q0fqs691afurtdund9bsqk12.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
