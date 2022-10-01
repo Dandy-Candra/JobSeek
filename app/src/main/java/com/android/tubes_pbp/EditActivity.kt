@@ -30,21 +30,41 @@ class EditActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         val id = sharedPreferences!!.getString(id,"")!!.toInt()
         loadData(id)
+        val intent = Intent(this, HomeActivity::class.java)
 
         binding.topAppBar.setOnMenuItemClickListener { menuItem->
             when(menuItem.itemId){
                 R.id.Save -> {
+
                     CoroutineScope(Dispatchers.IO).launch {
-                        val user = db?.userDao()?.updateUser(User(id,binding.inputUsername.text.toString()
-                            ,binding.inputEmail.text.toString(),binding.inputPassword.text.toString(),
-                        binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()))
+                        val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
+
+                        withContext(Dispatchers.Main) {
+                            if(users == null) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    db?.userDao()?.updateUser(
+                                        User(
+                                            id,
+                                            binding.inputUsername.text.toString(),
+                                            binding.inputEmail.text.toString(),
+                                            binding.inputPassword.text.toString(),
+                                            binding.inputTanggalLahir.text.toString(),
+                                            binding.inputNomorTelepon.text.toString()
+                                        )
+                                    )
+                                }
+                                finish()
+                                val bundle = Bundle()
+                                bundle.putString("key", "iniTerisi")
+                                intent.putExtra("keyBundle", bundle)
+                                startActivity(intent)
+                            }else{
+                                binding.layoutUsername.setError("Username Already Exist!")
+                            }
+
+                        }
                     }
-                    finish()
-                    val intent = Intent(this, HomeActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("key","iniTerisi")
-                    intent.putExtra("keyBundle",bundle)
-                    startActivity(intent)
+
 
                     true
                 }

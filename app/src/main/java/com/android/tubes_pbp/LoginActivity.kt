@@ -64,18 +64,17 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
 
             CoroutineScope(Dispatchers.IO).launch {
-                val users = db.userDao().getUsers()
+                val users = db.userDao().getUserLogin(binding.inputUsername.text.toString(),binding.inputPassword.text.toString())
                 Log.d("LoginActivity","dbResponse: $users")
 
-                for(i in users){
-                    if(binding.inputUsername.text.toString() == i.username && binding.inputPassword.text.toString() == i.password){
+
+                    if(users != null){
                         val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-                        editor.putString(id, i.id.toString())
+                        editor.putString(id, users.id.toString())
                         editor.apply()
                         access = true
-                        break
                     }
-                }
+
 
                 withContext(Dispatchers.Main){
                     if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){

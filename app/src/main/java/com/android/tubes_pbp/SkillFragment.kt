@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -123,13 +124,14 @@ class SkillFragment : Fragment() {
         val builder = NotificationCompat.Builder(this.requireActivity(), CHANNEL_ID_2)
             .setSmallIcon(R.drawable.ic_baseline_notifications_24)
             .setContentTitle(title)
+            .setColor(Color.BLUE)
             .setContentText(deskripsi)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setGroup(GROUP_KEY_WORK_EMAIL)
 
         val summaryNotification = NotificationCompat.Builder(this.requireActivity(), CHANNEL_ID_2)
             //set content text to support devices running API level < 24
-            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+            .setSmallIcon(R.drawable.ic_baseline_info_24)
             //build summary info into InboxStyle template
             //specify which group this notification belongs to
             .setGroup(GROUP_KEY_WORK_EMAIL)

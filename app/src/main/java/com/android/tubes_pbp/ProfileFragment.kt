@@ -1,5 +1,6 @@
 package com.android.tubes_pbp
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.FragmentTransaction
 import com.android.tubes_pbp.databinding.FragmentProfileBinding
 import com.android.tubes_pbp.databinding.FragmentSkillBinding

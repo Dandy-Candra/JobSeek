@@ -9,13 +9,23 @@ import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_home.view.*
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var btnLogout: Button
+    var left = 0
+    var right = 0
+    var temp = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        if(temp==0){
+            left = layout_fragment.paddingLeft
+            right = layout_fragment.paddingRight
+        }
+
 
         val navView : NavigationBarView = findViewById(R.id.bottom_navigation)
 
@@ -27,8 +37,7 @@ class HomeActivity : AppCompatActivity() {
             changeFragment(FragmentLowongan())
         }
 
-        val left = layout_fragment.paddingLeft
-        val right = layout_fragment.paddingRight
+
 
 
         navView.setOnItemSelectedListener { item ->

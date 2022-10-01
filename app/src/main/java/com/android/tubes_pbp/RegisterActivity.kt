@@ -23,12 +23,14 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
     val db by lazy { TubesDB(this) }
     private var userId: Int = 0
     private lateinit var binding: ActivityRegisterBinding
+    private var access = false
 
     private val CHANNEL_ID_REGISTER = "channel_notification_01"
     private val notificationId1 = 101
@@ -61,19 +63,32 @@ class RegisterActivity : AppCompatActivity() {
                 intent.putExtra("registerBundle",bundle)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    db.userDao().addUser(
-                        User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
-                            binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()  )
-                    )
-                    finish()
+                    val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
+                    if(users==null)
+                        access = true
+                    withContext(Dispatchers.Main) {
+                        if(access == true){
+                            CoroutineScope(Dispatchers.IO).launch {
+                                db.userDao().addUser(
+                                    User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
+                                        binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()  )
+                                )
+                            }
+
+                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
+                            createNotificationChannel()
+                            sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
+
+                            startActivity(intent)
+                        }else{
+                            binding.layoutUsername.setError("Username Already Exist!")
+                        }
+                    }
+
                 }
 
-                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
-                createNotificationChannel()
-                sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
 
 
-                startActivity(intent)
             } else {
                 if (binding.inputUsername.text.toString().isEmpty()){
                     binding.layoutUsername.setError("Username Harus Diisi")
@@ -138,7 +153,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID_REGISTER)
-            .setSmallIcon(R.drawable.ic_baseline_arrow_back_24)
+            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
             .setContentTitle("Registrasi Berhasil")
             .setContentText("Halo " + username + " Kamu Berhasil Registrasi")
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
