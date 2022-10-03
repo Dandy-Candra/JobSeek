@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.tubes_pbp.databinding.RvItemLowonganBinding
 import com.android.tubes_pbp.entity.Lowongan
-import com.android.tubes_pbp.user.Experience
 
-class RVlowonganAdapter(private val data: Array<Lowongan>, private val listener: OnAdapterListener) : RecyclerView.Adapter<RVlowonganAdapter.viewHolder>()  {
+class RVlowonganAdapter(
+    private val data: Array<Lowongan>,
+    private val listener: OnAdapterListener
+) : RecyclerView.Adapter<RVlowonganAdapter.viewHolder>() {
     private lateinit var binding: RvItemLowonganBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
 
@@ -25,12 +27,12 @@ class RVlowonganAdapter(private val data: Array<Lowongan>, private val listener:
         return data.size
     }
 
-    class viewHolder( val binding: RvItemLowonganBinding) : RecyclerView.ViewHolder(binding.root)
-    {
+    class viewHolder(val binding: RvItemLowonganBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(lowongan: Lowongan) {
             binding.lowongan = lowongan
         }
     }
+
     interface OnAdapterListener {
         fun onClick(lowongan: Lowongan)
 

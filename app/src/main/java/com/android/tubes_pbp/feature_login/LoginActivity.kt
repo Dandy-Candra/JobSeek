@@ -1,26 +1,27 @@
-package com.android.tubes_pbp
+package com.android.tubes_pbp.feature_login
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.android.tubes_pbp.HomeActivity
+import com.android.tubes_pbp.R
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
-import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 import com.android.tubes_pbp.user.TubesDB
-import com.android.tubes_pbp.user.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
+
     val db by lazy { TubesDB(this) }
     private lateinit var binding: ActivityLoginBinding
-    lateinit var lBundle : Bundle
+    lateinit var lBundle: Bundle
 
     private val myPreference = "myPref"
     private val key = "nameKey"
@@ -29,14 +30,14 @@ class LoginActivity : AppCompatActivity() {
     var sharedPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
 
-        if(!sharedPreferences!!.contains(key)){
+        if (!sharedPreferences!!.contains(key)) {
             val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
             editor.putString(key, "terisi")
             editor.apply()
@@ -45,13 +46,13 @@ class LoginActivity : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 setContentView(view)
             }, 3000)
-        }else{
+        } else {
             setContentView(view)
         }
 
 
         val moveHome = Intent(this, HomeActivity::class.java)
-        if(intent.getBundleExtra("registerBundle")!=null){
+        if (intent.getBundleExtra("registerBundle") != null) {
             lBundle = intent.getBundleExtra("registerBundle")!!
             binding.inputUsername.setText(lBundle.getString("username"))
             binding.inputPassword.setText(lBundle.getString("password"))
@@ -64,46 +65,46 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
 
             CoroutineScope(Dispatchers.IO).launch {
-                val users = db.userDao().getUserLogin(binding.inputUsername.text.toString(),binding.inputPassword.text.toString())
-                Log.d("LoginActivity","dbResponse: $users")
+                val users = db.userDao().getUserLogin(
+                    binding.inputUsername.text.toString(),
+                    binding.inputPassword.text.toString()
+                )
+                Log.d("LoginActivity", "dbResponse: $users")
 
 
-                    if(users != null){
-                        val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-                        editor.putString(id, users.id.toString())
-                        editor.apply()
-                        access = true
-                    }
+                if (users != null) {
+                    val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+                    editor.putString(id, users.id.toString())
+                    editor.apply()
+                    access = true
+                }
 
 
-                withContext(Dispatchers.Main){
-                    if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){
+                withContext(Dispatchers.Main) {
+                    if ((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)) {
                         access = false
 
                         startActivity(moveHome)
                         finish()
-                    }else{
-                        if(binding.inputUsername.text.toString().isEmpty()){
+                    } else {
+                        if (binding.inputUsername.text.toString().isEmpty()) {
                             binding.layoutUsername.setError("Username Harus Diisi")
-                        }else{
+                        } else {
                             binding.layoutUsername.setError("Username Salah")
                         }
 
-                        if(binding.inputPassword.text.toString().isEmpty()){
+                        if (binding.inputPassword.text.toString().isEmpty()) {
                             binding.layoutPassword.setError("Password Harus Diisi")
-                        }else{
+                        } else {
                             binding.layoutPassword.setError("Password Salah")
                         }
-
 
 
                     }
                 }
 
 
-
             }
-
 
 
         }

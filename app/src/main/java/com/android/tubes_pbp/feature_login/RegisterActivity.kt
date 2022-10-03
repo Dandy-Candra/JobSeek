@@ -1,4 +1,4 @@
-package com.android.tubes_pbp
+package com.android.tubes_pbp.feature_login
 
 import android.app.DatePickerDialog
 import android.app.NotificationChannel
@@ -10,16 +10,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.android.tubes_pbp.NotificationReceiver
+import com.android.tubes_pbp.R
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +26,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
+
     val db by lazy { TubesDB(this) }
     private var userId: Int = 0
     private lateinit var binding: ActivityRegisterBinding
@@ -37,11 +37,10 @@ class RegisterActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         binding = ActivityRegisterBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         val cal = Calendar.getInstance()
         val myYear = cal.get(Calendar.YEAR)
@@ -55,33 +54,48 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnSignUp.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isEmpty() && !binding.inputPassword.text.toString().isEmpty() && !binding.inputTanggalLahir.text.toString().isEmpty() &&
-                !binding.inputEmail.text.toString().isEmpty() && !binding.inputNomorTelepon.text.toString().isEmpty()){
+            if (binding.inputUsername.text.toString()
+                    .isNotEmpty() && binding.inputPassword.text.toString()
+                    .isNotEmpty() && binding.inputTanggalLahir.text.toString().isNotEmpty() &&
+                binding.inputEmail.text.toString()
+                    .isNotEmpty() && binding.inputNomorTelepon.text.toString()
+                    .isNotEmpty()
+            ) {
                 val bundle = Bundle()
-                bundle.putString("username",binding.inputUsername.text.toString())
-                bundle.putString("password",binding.inputPassword.text.toString())
-                intent.putExtra("registerBundle",bundle)
+                bundle.putString("username", binding.inputUsername.text.toString())
+                bundle.putString("password", binding.inputPassword.text.toString())
+                intent.putExtra("registerBundle", bundle)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
-                    if(users==null)
+                    val users =
+                        db.userDao().getUserByUsername(binding.inputUsername.text.toString())
+                    if (users == null)
                         access = true
                     withContext(Dispatchers.Main) {
-                        if(access == true){
+                        if (access == true) {
                             CoroutineScope(Dispatchers.IO).launch {
                                 db.userDao().addUser(
-                                    User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
-                                        binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()  )
+                                    User(
+                                        0,
+                                        binding.inputUsername.text.toString(),
+                                        binding.inputEmail.text.toString(),
+                                        binding.inputPassword.text.toString(),
+                                        binding.inputTanggalLahir.text.toString(),
+                                        binding.inputNomorTelepon.text.toString()
+                                    )
                                 )
                             }
 
                             val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
                             createNotificationChannel()
-                            sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
+                            sendNotification1(
+                                binding.inputUsername.text.toString(),
+                                Bitmap.createScaledBitmap(bitmap, 300, 100, false)
+                            )
 
                             startActivity(intent)
                             finish()
-                        }else{
+                        } else {
                             binding.layoutUsername.setError("Username Already Exist!")
                         }
                     }
@@ -90,21 +104,20 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
 
-
             } else {
-                if (binding.inputUsername.text.toString().isEmpty()){
+                if (binding.inputUsername.text.toString().isEmpty()) {
                     binding.layoutUsername.setError("Username Harus Diisi")
                 }
-                if (binding.inputPassword.text.toString().isEmpty()){
+                if (binding.inputPassword.text.toString().isEmpty()) {
                     binding.layoutPassword.setError("Password Harus Diisi")
                 }
-                if (binding.inputTanggalLahir.text.toString().isEmpty()){
+                if (binding.inputTanggalLahir.text.toString().isEmpty()) {
                     binding.layoutTanggalLahir.setError("Tanggal Lahir Harus Diiisi")
                 }
-                if (binding.inputEmail.text.toString().isEmpty()){
+                if (binding.inputEmail.text.toString().isEmpty()) {
                     binding.layoutEmail.setError("Email Harus Diisi")
                 }
-                if (binding.inputNomorTelepon.text.toString().isEmpty()){
+                if (binding.inputNomorTelepon.text.toString().isEmpty()) {
                     binding.layoutNomorTelepon.setError("Nomor Telp Harus Diiisi")
                 }
             }
@@ -113,13 +126,19 @@ class RegisterActivity : AppCompatActivity() {
         binding.inputTanggalLahir.setOnFocusChangeListener { view, b ->
             val datePicker =
                 this?.let { it1 ->
-                    DatePickerDialog(it1, DatePickerDialog.OnDateSetListener{ view, year, month, dayOfMonth ->
-                        binding.inputTanggalLahir.setText("${dayOfMonth}/${(month.toInt() + 1).toString()}/${year}")
-                    },myYear,myMonth,myDay)
+                    DatePickerDialog(
+                        it1,
+                        DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                            binding.inputTanggalLahir.setText("${dayOfMonth}/${(month.toInt() + 1).toString()}/${year}")
+                        },
+                        myYear,
+                        myMonth,
+                        myDay
+                    )
                 }
-            if(b){
+            if (b) {
                 datePicker?.show()
-            }else{
+            } else {
                 datePicker?.hide()
             }
 
@@ -127,12 +146,16 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notification Register"
             val descriptionText = "Notification Description"
 
-            val channel1 = NotificationChannel(CHANNEL_ID_REGISTER,name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+            val channel1 = NotificationChannel(
+                CHANNEL_ID_REGISTER,
+                name,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
                 description = descriptionText
             }
 
@@ -143,15 +166,16 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendNotification1(username: String, bitmap : Bitmap){
-        val intent : Intent = Intent (this, LoginActivity::class.java).apply {
+    private fun sendNotification1(username: String, bitmap: Bitmap) {
+        val intent: Intent = Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this,0,intent,0)
-        val broadcastIntent : Intent = Intent(this, NotificationReceiver::class.java)
-        broadcastIntent.putExtra("toastMessage","Halo " + username + " Kamu Berhasil Registrasi")
-        val actionIntent = PendingIntent.getBroadcast(this,0,broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val broadcastIntent: Intent = Intent(this, NotificationReceiver::class.java)
+        broadcastIntent.putExtra("toastMessage", "Halo " + username + " Kamu Berhasil Registrasi")
+        val actionIntent =
+            PendingIntent.getBroadcast(this, 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID_REGISTER)
@@ -169,15 +193,12 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
-        with(NotificationManagerCompat.from(this)){
+        with(NotificationManagerCompat.from(this)) {
             notify(notificationId1, builder.build())
         }
 
 
-
     }
-
-
 
 
 }

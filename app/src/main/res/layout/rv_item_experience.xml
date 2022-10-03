@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            type="com.android.tubes_pbp.user.Experience"
-            name="experience"/>
 
         <variable
-            type="com.android.tubes_pbp.ExperienceAdapter.OnAdapterListener"
-            name="experienceClick"/>
+            name="experience"
+            type="com.android.tubes_pbp.user.Experience" />
+
+        <variable
+            name="experienceClick"
+            type="com.android.tubes_pbp.ExperienceAdapter.OnAdapterListener" />
     </data>
 
     <LinearLayout
@@ -23,9 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
             android:clickable="true"
-            android:onClick="@{() ->  experienceClick.onClick(experience)}">
+            android:onClick="@{() ->  experienceClick.onClick(experience)}"
+            app:cardCornerRadius="20dp">
 
 
             <LinearLayout
@@ -54,9 +54,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:onClick="@{() ->  experienceClick.onEdit(experience)}"
                         android:src="@drawable/ic_baseline_edit_24"
-                        android:text="tess"
-                        android:onClick="@{() ->  experienceClick.onEdit(experience)}"/>
+                        android:text="tess" />
                 </RelativeLayout>
 
 

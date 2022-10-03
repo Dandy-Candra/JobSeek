@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailLowongan"
-    android:background="@drawable/box2">
+    android:background="@drawable/box2"
+    tools:context=".DetailLowongan">
 
     <ImageView
         android:id="@+id/image"
@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
         android:text="Nama Perusahaan"
+        android:textAlignment="textStart"
         android:textColor="#1C3879"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
@@ -46,8 +47,7 @@
         app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.056"
-        android:textAlignment="textStart"/>
+        app:layout_constraintVertical_bias="0.056" />
 
     <TextView
         android:id="@+id/description"
@@ -67,10 +67,10 @@
         android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:backgroundTint="#1C3879"
         android:fontFamily="@font/poppins_bold"
         android:text="Lamar Sekarang"
         android:textColor="#EAE3D2"
-        android:backgroundTint="#1C3879"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

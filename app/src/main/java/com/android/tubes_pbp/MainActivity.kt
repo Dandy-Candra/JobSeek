@@ -3,12 +3,8 @@ package com.android.tubes_pbp
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.android.tubes_pbp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -25,21 +21,21 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
     }
 
-    private fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val name = "Notification Title"
-            val descriptionText = "Notification Description"
+    private fun createNotificationChannel() {
+        val name = "Notification Title"
+        val descriptionText = "Notification Description"
 
-            val channel1 = NotificationChannel(CHANNEL_ID_1, name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+        val channel1 =
+            NotificationChannel(CHANNEL_ID_1, name, NotificationManager.IMPORTANCE_DEFAULT).apply {
                 description = descriptionText
             }
-            val channel2 = NotificationChannel(CHANNEL_ID_2, name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+        val channel2 =
+            NotificationChannel(CHANNEL_ID_2, name, NotificationManager.IMPORTANCE_DEFAULT).apply {
                 description = descriptionText
             }
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel1)
-            notificationManager.createNotificationChannel(channel2)
-        }
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel1)
+        notificationManager.createNotificationChannel(channel2)
     }
 }

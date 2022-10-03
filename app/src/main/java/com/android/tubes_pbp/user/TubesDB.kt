@@ -6,19 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [User::class,Experience::class],
+    entities = [User::class, Experience::class],
+    exportSchema = false,
     version = 1
 )
-abstract class TubesDB: RoomDatabase() {
+abstract class TubesDB : RoomDatabase() {
 
-    abstract fun userDao() : UserDao
-    abstract fun experienceDao() : ExperienceDao
+    abstract fun userDao(): UserDao
+    abstract fun experienceDao(): ExperienceDao
 
     companion object {
-        @Volatile private var instance : TubesDB? = null
+        @Volatile
+        private var instance: TubesDB? = null
         private val LOCK = Any()
-        operator fun invoke (context: Context) = instance ?: synchronized(LOCK){
-            instance ?: buildDatabase(context).also{
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
+            instance ?: buildDatabase(context).also {
                 instance = it
             }
         }

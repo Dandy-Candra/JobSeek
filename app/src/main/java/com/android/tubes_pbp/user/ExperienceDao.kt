@@ -14,11 +14,11 @@ interface ExperienceDao {
     suspend fun deleteExperience(experience: Experience)
 
     @Query("SELECT * FROM experience")
-    suspend fun getExperiences() : List<Experience>
+    suspend fun getExperiences(): List<Experience>
 
     @Query("SELECT * FROM experience WHERE idUser =:user_id")
-    suspend fun getExperiencesById(user_id: Int) : List<Experience>
+    suspend fun getExperiencesById(user_id: Int): List<Experience>
 
     @Query("SELECT * FROM experience WHERE id =:experience_id")
-    suspend fun getUser(experience_id: Int) : List<Experience>
+    suspend fun getUser(experience_id: Int): List<Experience>
 }

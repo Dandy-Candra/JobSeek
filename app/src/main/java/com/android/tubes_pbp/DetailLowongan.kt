@@ -1,9 +1,8 @@
 package com.android.tubes_pbp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.android.tubes_pbp.databinding.ActivityDetailLowonganBinding
-import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 
 class DetailLowongan : AppCompatActivity() {
     private lateinit var binding: ActivityDetailLowonganBinding
@@ -14,9 +13,9 @@ class DetailLowongan : AppCompatActivity() {
         setContentView(binding.root)
 
         val bundle = intent.getBundleExtra("detailLowongan")
-        binding.title.setText(bundle?.getString("title",""))
-        binding.description.setText(bundle?.getString("description",""))
-        binding.image.setImageResource(bundle?.getInt("photo",0)!!)
+        binding.title.setText(bundle?.getString("title", ""))
+        binding.description.setText(bundle?.getString("description", ""))
+        binding.image.setImageResource(bundle?.getInt("photo", 0)!!)
 
     }
 }

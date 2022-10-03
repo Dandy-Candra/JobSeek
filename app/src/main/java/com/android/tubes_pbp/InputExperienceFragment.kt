@@ -7,12 +7,12 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.android.tubes_pbp.databinding.FragmentInputExperienceBinding
 import com.android.tubes_pbp.user.Experience
@@ -34,32 +34,38 @@ class InputExperienceFragment : Fragment() {
     private val notificationId = 103
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentInputExperienceBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createNotificationChannel()
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-        val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
-        if(arguments?.getString("key")=="update"){
+        val idUser = sharedPreferences!!.getString(id, "")!!.toInt()
+        if (arguments?.getString("key") == "update") {
             binding.editTitle.setText(arguments?.getString("title"))
             binding.editDescription.setText(arguments?.getString("description"))
             val id = requireArguments().getInt("id")
             binding.buttonSave.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    db?.experienceDao()?.updateExperience(Experience(id,binding.editTitle.text.toString(),binding.editDescription.text.toString(),idUser))
+                    db?.experienceDao()?.updateExperience(
+                        Experience(
+                            id,
+                            binding.editTitle.text.toString(),
+                            binding.editDescription.text.toString(),
+                            idUser
+                        )
+                    )
 
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         val secondFragment = SkillFragment()
-                        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+                        val transaction: FragmentTransaction =
+                            requireFragmentManager().beginTransaction()
                         transaction.replace(R.id.layout_fragment, secondFragment)
                         transaction.commit()
                     }
@@ -68,28 +74,45 @@ class InputExperienceFragment : Fragment() {
 
             binding.buttonDelete.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    db?.experienceDao()?.deleteExperience(Experience(id,
-                        arguments?.getString("title")!!, arguments?.getString("description")!!,idUser
-                    ))
+                    db?.experienceDao()?.deleteExperience(
+                        Experience(
+                            id,
+                            arguments?.getString("title")!!,
+                            arguments?.getString("description")!!,
+                            idUser
+                        )
+                    )
 
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         val secondFragment = SkillFragment()
-                        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+                        val transaction: FragmentTransaction =
+                            requireFragmentManager().beginTransaction()
                         transaction.replace(R.id.layout_fragment, secondFragment)
                         transaction.commit()
                     }
                 }
             }
-        }else{
+        } else {
             binding.buttonDelete.visibility = View.GONE
             binding.buttonSave.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
-                    db?.experienceDao()?.addExperience(Experience(0,binding.editTitle.text.toString(),binding.editDescription.text.toString(),idUser))
+                    db?.experienceDao()?.addExperience(
+                        Experience(
+                            0,
+                            binding.editTitle.text.toString(),
+                            binding.editDescription.text.toString(),
+                            idUser
+                        )
+                    )
 
-                    withContext(Dispatchers.Main){
-                        sendNotification2(binding.editTitle.text.toString(),binding.editDescription.text.toString())
+                    withContext(Dispatchers.Main) {
+                        sendNotification2(
+                            binding.editTitle.text.toString(),
+                            binding.editDescription.text.toString()
+                        )
                         val secondFragment = SkillFragment()
-                        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+                        val transaction: FragmentTransaction =
+                            requireFragmentManager().beginTransaction()
                         transaction.replace(R.id.layout_fragment, secondFragment)
                         transaction.commit()
                     }
@@ -98,12 +121,16 @@ class InputExperienceFragment : Fragment() {
         }
     }
 
-    private fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notification Save"
             val descriptionText = "Notification Description"
 
-            val channel1 = NotificationChannel(CHANNEL_ID_SAVE,name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+            val channel1 = NotificationChannel(
+                CHANNEL_ID_SAVE,
+                name,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
                 description = descriptionText
             }
 
@@ -114,7 +141,7 @@ class InputExperienceFragment : Fragment() {
         }
     }
 
-    private fun sendNotification2(title : String, description : String){
+    private fun sendNotification2(title: String, description: String) {
 
         val builder = NotificationCompat.Builder(this.requireActivity(), CHANNEL_ID_SAVE)
             .setSmallIcon(R.drawable.ic_baseline_info_24)
@@ -123,10 +150,11 @@ class InputExperienceFragment : Fragment() {
             .setColor(Color.BLUE)
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(description)
-                .setBigContentTitle(title)
-                .setSummaryText("Save Succes"))
+                    .setBigContentTitle(title)
+                    .setSummaryText("Save Succes")
+            )
 
-        with(NotificationManagerCompat.from(this.requireActivity())){
+        with(NotificationManagerCompat.from(this.requireActivity())) {
             notify(notificationId, builder.build())
         }
     }
