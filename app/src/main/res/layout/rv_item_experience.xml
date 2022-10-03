@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_skill"
-        style="?attr/materialCardViewFilledStyle"
+    <data>
+        <variable
+            type="com.android.tubes_pbp.user.Experience"
+            name="experience"/>
+
+        <variable
+            type="com.android.tubes_pbp.ExperienceAdapter.OnAdapterListener"
+            name="experienceClick"/>
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="20dp"
-        android:clickable="true">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_skill"
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="20dp"
+            android:clickable="true"
+            android:onClick="@{() ->  experienceClick.onClick(experience)}">
 
 
             <LinearLayout
@@ -25,26 +38,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Halo"
+                        android:text="@{experience.title}"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="#1C3879"
-                        android:layout_alignParentLeft="true"/>
+                        android:textColor="#1C3879" />
 
                     <ImageView
                         android:id="@+id/tv_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="tess"
-                        android:src="@drawable/ic_baseline_edit_24"
                         android:layout_alignParentRight="true"
-                        />
+                        android:src="@drawable/ic_baseline_edit_24"
+                        android:text="tess"
+                        android:onClick="@{() ->  experienceClick.onEdit(experience)}"/>
                 </RelativeLayout>
-
 
 
                 <TextView
@@ -53,12 +66,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/poppins"
-                    android:text="Tes"
+                    android:text="@{experience.description}"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary" />
             </LinearLayout>
 
 
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

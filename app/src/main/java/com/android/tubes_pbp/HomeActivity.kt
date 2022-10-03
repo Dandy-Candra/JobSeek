@@ -7,11 +7,14 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
+import com.android.tubes_pbp.databinding.ActivityHomeBinding
+import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var btnLogout: Button
     var left = 0
     var right = 0
@@ -19,7 +22,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if(temp==0){
             left = layout_fragment.paddingLeft
@@ -27,8 +31,8 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
-        val navView : NavigationBarView = findViewById(R.id.bottom_navigation)
-
+        val navView  = binding.bottomNavigation
+        navView.itemActiveIndicatorColor = getColorStateList(R.color.white)
         if(intent.getBundleExtra("keyBundle")!=null){
             navView.selectedItemId = R.id.profile
             layout_fragment.setPadding(0,0,0,0)
@@ -48,8 +52,7 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.search -> {
-
-                    changeFragment(SearchFragment())
+                    changeFragment(HomeFragment())
                     layout_fragment.setPadding(left,0,right,0)
                     true
                 }

@@ -5,36 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android.tubes_pbp.databinding.RvItemExperienceBinding
+import com.android.tubes_pbp.databinding.RvItemLowonganBinding
+import com.android.tubes_pbp.entity.Lowongan
 import com.android.tubes_pbp.user.Experience
 import kotlinx.android.synthetic.main.rv_item_experience.view.*
 
 class ExperienceAdapter (private val experiences: ArrayList<Experience>, private val listener: OnAdapterListener) :
     RecyclerView.Adapter<ExperienceAdapter.ExperienceViewHolder>()
 {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            ExperienceViewHolder {
-        return ExperienceViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.rv_item_experience,parent, false)
-        )
+    private lateinit var binding: RvItemExperienceBinding
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperienceViewHolder {
+        binding = RvItemExperienceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ExperienceViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ExperienceViewHolder, position:
-    Int) {
+    override fun onBindViewHolder(holder: ExperienceViewHolder, position: Int) {
         val experience = experiences[position]
-        holder.view.tv_title.text = experience.title
-        holder.view.tv_description.text = experience.description
-        holder.view.card_skill.setOnClickListener {
-            listener.onClick(experience)
-        }
-        holder.view.tv_edit.setOnClickListener {
-            listener.onEdit(experience)
-        }
+        holder.bind(experience)
+        holder.view.experienceClick = listener
 
     }
 
     override fun getItemCount() = experiences.size
 
-    inner class ExperienceViewHolder( val view: View) : RecyclerView.ViewHolder(view)
+    inner class ExperienceViewHolder( val view: RvItemExperienceBinding) : RecyclerView.ViewHolder(view.root){
+        fun bind(experience: Experience) {
+            view.experience = experience
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData (list: List<Experience>){

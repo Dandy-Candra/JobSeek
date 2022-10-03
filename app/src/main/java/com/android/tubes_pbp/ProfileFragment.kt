@@ -44,7 +44,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btnLogOut : Button = view.findViewById(R.id.btnLogout)
+        val btnLogOut  = binding.btnLogout
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
         CoroutineScope(Dispatchers.IO).launch {

@@ -80,6 +80,7 @@ class RegisterActivity : AppCompatActivity() {
                             sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
 
                             startActivity(intent)
+                            finish()
                         }else{
                             binding.layoutUsername.setError("Username Already Exist!")
                         }

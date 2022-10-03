@@ -13,13 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.tubes_pbp.databinding.FragmentInputExperienceBinding
-import com.android.tubes_pbp.entity.lowongan
 import com.android.tubes_pbp.user.Experience
 import com.android.tubes_pbp.user.TubesDB
 import kotlinx.coroutines.CoroutineScope
