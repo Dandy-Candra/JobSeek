@@ -8,19 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.tubes_pbp.databinding.FragmentLowonganBinding
+import com.android.tubes_pbp.databinding.FragmentProfileBinding
 import com.android.tubes_pbp.entity.Lowongan
 
 
 
 class FragmentLowongan : Fragment() {
 
-
+    private var _binding: FragmentLowonganBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lowongan, container, false)
+        _binding = FragmentLowonganBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +42,7 @@ class FragmentLowongan : Fragment() {
             }
         })
 
-        val rvLowongan : RecyclerView = view.findViewById(R.id.rv_lowongan)
+        val rvLowongan : RecyclerView = binding.rvLowongan
 
         rvLowongan.layoutManager = layoutManager
 

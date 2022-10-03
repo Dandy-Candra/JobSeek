@@ -52,29 +52,31 @@ class SkillFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         createNotificationChannel()
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-        val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
+        val idUser = sharedPreferences!!.getString(id, "")!!.toInt()
         val bundle = Bundle()
         val secondFragment = InputExperienceFragment()
         val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
         transaction.replace(R.id.layout_fragment, secondFragment)
         val layoutManager = LinearLayoutManager(context)
-        val adapter : ExperienceAdapter = ExperienceAdapter(arrayListOf(),object : ExperienceAdapter.OnAdapterListener{
-            override fun onClick(experience: Experience) {
-                sendNotification(idNotif,experience.title , experience.description)
-                idNotif++
-                println(idNotif)
-            }
-            override fun onEdit(experience: Experience) {
-                bundle.putString("key","update")
-                bundle.putInt("id",experience.id)
-                bundle.putString("title",experience.title)
-                bundle.putString("description",experience.description)
-                secondFragment.arguments = bundle
-                transaction.commit()
-            }
-        })
+        val adapter: ExperienceAdapter =
+            ExperienceAdapter(arrayListOf(), object : ExperienceAdapter.OnAdapterListener {
+                override fun onClick(experience: Experience) {
+                    sendNotification(idNotif, experience.title, experience.description)
+                    idNotif++
+                    println(idNotif)
+                }
 
-        val rvLowongan : RecyclerView = binding.rvExperience
+                override fun onEdit(experience: Experience) {
+                    bundle.putString("key", "update")
+                    bundle.putInt("id", experience.id)
+                    bundle.putString("title", experience.title)
+                    bundle.putString("description", experience.description)
+                    secondFragment.arguments = bundle
+                    transaction.commit()
+                }
+            })
+
+        val rvLowongan: RecyclerView = binding.rvExperience
 
         rvLowongan.layoutManager = layoutManager
 
@@ -83,15 +85,15 @@ class SkillFragment : Fragment() {
         rvLowongan.adapter = adapter
         CoroutineScope(Dispatchers.IO).launch {
             val experiences = db?.experienceDao()?.getExperiencesById(idUser)
-            Log.d("MainActivity","dbResponse: $experiences")
-            withContext(Dispatchers.Main){
+            Log.d("MainActivity", "dbResponse: $experiences")
+            withContext(Dispatchers.Main) {
                 adapter.setData(experiences!!)
             }
         }
 
 
         binding.btnAdd.setOnClickListener {
-            bundle.putString("key","add")
+            bundle.putString("key", "add")
             secondFragment.arguments = bundle
             transaction.commit()
 
@@ -100,12 +102,16 @@ class SkillFragment : Fragment() {
 
     }
 
-    private fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notification Title"
             val descriptionText = "Notification Description"
 
-            val channel2 = NotificationChannel(CHANNEL_ID_2,name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+            val channel2 = NotificationChannel(
+                CHANNEL_ID_2,
+                name,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
                 description = descriptionText
             }
 
@@ -116,7 +122,7 @@ class SkillFragment : Fragment() {
     }
 
 
-    private fun sendNotification(id: Int, title: String, deskripsi: String){
+    private fun sendNotification(id: Int, title: String, deskripsi: String) {
 
         val SUMMARY_ID = 0
         val GROUP_KEY_WORK_EMAIL = "skill_notif"
@@ -139,7 +145,7 @@ class SkillFragment : Fragment() {
             .setGroupSummary(true)
 
 
-        with(NotificationManagerCompat.from(this.requireActivity())){
+        with(NotificationManagerCompat.from(this.requireActivity())) {
             notify(SUMMARY_ID, summaryNotification.build())
             notify(id, builder.build())
 

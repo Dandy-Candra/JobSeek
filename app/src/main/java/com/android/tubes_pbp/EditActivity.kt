@@ -20,6 +20,8 @@ class EditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditBinding
     private val id = "idKey"
     private val myPreference = "myPref"
+    private var temp : String? = null
+    private var access = true
     var sharedPreferences: SharedPreferences? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,36 +37,35 @@ class EditActivity : AppCompatActivity() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem->
             when(menuItem.itemId){
                 R.id.Save -> {
-
                     CoroutineScope(Dispatchers.IO).launch {
-                        val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
+                        val userExist = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
+                        if(userExist != null && temp != binding.inputUsername.text.toString()) {
+                            access = false
+                        }
 
                         withContext(Dispatchers.Main) {
-                            if(users == null) {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    db?.userDao()?.updateUser(
-                                        User(
-                                            id,
-                                            binding.inputUsername.text.toString(),
-                                            binding.inputEmail.text.toString(),
-                                            binding.inputPassword.text.toString(),
-                                            binding.inputTanggalLahir.text.toString(),
-                                            binding.inputNomorTelepon.text.toString()
-                                        )
+                            if (access) {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                db?.userDao()?.updateUser(
+                                    User(
+                                        id,
+                                        binding.inputUsername.text.toString(),
+                                        binding.inputEmail.text.toString(),
+                                        binding.inputPassword.text.toString(),
+                                        binding.inputTanggalLahir.text.toString(),
+                                        binding.inputNomorTelepon.text.toString()
                                     )
-                                }
-                                finish()
-//                                val bundle = Bundle()
-//                                bundle.putString("key", "iniTerisi")
-//                                intent.putExtra("keyBundle", bundle)
-//                                startActivity(intent)
+                                )
+                            }
+                            finish()
+
                             }else{
-                                binding.layoutUsername.setError("Username Already Exist!")
+                                    binding.layoutUsername.setError("Username Already Exist!")
+                                    access = true
                             }
 
                         }
                     }
-
 
                     true
                 }
@@ -84,7 +85,8 @@ class EditActivity : AppCompatActivity() {
 
 
             withContext(Dispatchers.Main){
-                binding.inputUsername.setText(user?.username)
+                temp = user?.username
+                binding.inputUsername.setText(temp)
                 binding.inputEmail.setText(user?.email)
                 binding.inputNomorTelepon.setText(user?.noTelp)
                 binding.inputTanggalLahir.setText(user?.date)

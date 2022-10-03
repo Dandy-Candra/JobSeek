@@ -50,6 +50,9 @@ class HomeFragment : Fragment() {
 
 
         binding.btnLowongan.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("key", "pindahLowongan")
+            intent.putExtra("keyBundle", bundle)
             startActivity(intent)
             activity?.finish()
         }

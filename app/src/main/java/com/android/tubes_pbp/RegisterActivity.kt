@@ -64,8 +64,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
-                    if(users==null)
-                        access = true
+                    if(users==null) access = true
                     withContext(Dispatchers.Main) {
                         if(access == true){
                             CoroutineScope(Dispatchers.IO).launch {
@@ -83,6 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                             finish()
                         }else{
                             binding.layoutUsername.setError("Username Already Exist!")
+                            access = false
                         }
                     }
 

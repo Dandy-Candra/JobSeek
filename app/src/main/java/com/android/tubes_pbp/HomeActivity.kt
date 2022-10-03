@@ -33,12 +33,23 @@ class HomeActivity : AppCompatActivity() {
 
         val navView  = binding.bottomNavigation
         navView.itemActiveIndicatorColor = getColorStateList(R.color.white)
+        val bundle = intent.getBundleExtra("keyBundle")
         if(intent.getBundleExtra("keyBundle")!=null){
-            navView.selectedItemId = R.id.profile
             layout_fragment.setPadding(0,0,0,0)
-            changeFragment(ProfileFragment())
+            if(bundle?.getString("key","")=="pindahLowongan"){
+                layout_fragment.setPadding(left,0,right,0)
+                navView.selectedItemId = R.id.search
+                changeFragment(FragmentLowongan())
+            }else {
+                navView.selectedItemId = R.id.profile
+                changeFragment(ProfileFragment())
+            }
+
+
+
+
         }else{
-            changeFragment(FragmentLowongan())
+            changeFragment(HomeFragment())
         }
 
 
@@ -47,12 +58,12 @@ class HomeActivity : AppCompatActivity() {
         navView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.home -> {
-                    changeFragment(FragmentLowongan())
+                    changeFragment(HomeFragment())
                     layout_fragment.setPadding(left,0,right,0)
                     true
                 }
                 R.id.search -> {
-                    changeFragment(HomeFragment())
+                    changeFragment(FragmentLowongan())
                     layout_fragment.setPadding(left,0,right,0)
                     true
                 }
