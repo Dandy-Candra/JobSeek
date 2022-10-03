@@ -49,7 +49,6 @@ class ProfileFragment : Fragment() {
 
 
 
-
         btnLogOut.setOnClickListener {
             activity?.let { it1 ->
                 MaterialAlertDialogBuilder(it1)
