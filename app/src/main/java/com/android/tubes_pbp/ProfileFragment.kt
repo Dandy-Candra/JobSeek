@@ -47,19 +47,6 @@ class ProfileFragment : Fragment() {
         val btnLogOut  = binding.btnLogout
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val user = db?.userDao()?.getUser(sharedPreferences!!.getString(id,"")!!.toInt())?.get(0)
-            binding.username.setText(user?.username)
-            binding.email.setText(user?.email)
-            binding.noTelp.setText(user?.noTelp)
-            binding.tglLahir.setText(user?.date)
-
-            binding.editProfile.setOnClickListener {
-                val moveEdit = Intent(activity, EditActivity::class.java)
-                startActivity(moveEdit)
-                activity?.finish()
-            }
-        }
 
 
 
@@ -76,6 +63,23 @@ class ProfileFragment : Fragment() {
                         activity?.finish()
                     }
                     .show()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        CoroutineScope(Dispatchers.IO).launch {
+            val user = db?.userDao()?.getUser(sharedPreferences!!.getString(id,"")!!.toInt())?.get(0)
+            binding.username.setText(user?.username)
+            binding.email.setText(user?.email)
+            binding.noTelp.setText(user?.noTelp)
+            binding.tglLahir.setText(user?.date)
+
+            binding.editProfile.setOnClickListener {
+                val moveEdit = Intent(activity, EditActivity::class.java)
+                startActivity(moveEdit)
+//                activity?.finish()
             }
         }
     }

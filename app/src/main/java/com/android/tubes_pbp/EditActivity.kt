@@ -54,10 +54,10 @@ class EditActivity : AppCompatActivity() {
                                     )
                                 }
                                 finish()
-                                val bundle = Bundle()
-                                bundle.putString("key", "iniTerisi")
-                                intent.putExtra("keyBundle", bundle)
-                                startActivity(intent)
+//                                val bundle = Bundle()
+//                                bundle.putString("key", "iniTerisi")
+//                                intent.putExtra("keyBundle", bundle)
+//                                startActivity(intent)
                             }else{
                                 binding.layoutUsername.setError("Username Already Exist!")
                             }

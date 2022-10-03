@@ -50,6 +50,7 @@ class InputExperienceFragment : Fragment() {
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
         if(arguments?.getString("key")=="update"){
+            binding.title.setText("Update Experience")
             binding.editTitle.setText(arguments?.getString("title"))
             binding.editDescription.setText(arguments?.getString("description"))
             val id = requireArguments().getInt("id")
@@ -81,6 +82,7 @@ class InputExperienceFragment : Fragment() {
                 }
             }
         }else{
+            binding.title.setText("Add Experience")
             binding.buttonDelete.visibility = View.GONE
             binding.buttonSave.setOnClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
