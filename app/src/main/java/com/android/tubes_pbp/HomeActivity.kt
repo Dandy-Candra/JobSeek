@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.favorite -> {
 
                     changeFragment(FavoriteFragment())
-                    layout_fragment.setPadding(left,0,right,0)
+                    layout_fragment.setPadding(0,0,0,0)
                     true
                 }
                 R.id.profile -> {

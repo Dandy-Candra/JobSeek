@@ -14,6 +14,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.FragmentTransaction
+import com.android.tubes_pbp.camera.CameraActivity
 import com.android.tubes_pbp.databinding.FragmentProfileBinding
 import com.android.tubes_pbp.databinding.FragmentSkillBinding
 import com.android.tubes_pbp.user.TubesDB
@@ -64,6 +65,12 @@ class ProfileFragment : Fragment() {
                     .show()
             }
         }
+
+        binding.Image.setOnClickListener {
+            // move to camera activity
+            val moveCamera = Intent(activity, CameraActivity::class.java)
+            startActivity(moveCamera)
+        }
     }
 
     override fun onStart() {
@@ -80,6 +87,7 @@ class ProfileFragment : Fragment() {
                 startActivity(moveEdit)
 //                activity?.finish()
             }
+
         }
     }
 
