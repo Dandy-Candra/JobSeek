@@ -66,10 +66,29 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        binding.Image.setOnClickListener {
-            // move to camera activity
-            val moveCamera = Intent(activity, CameraActivity::class.java)
-            startActivity(moveCamera)
+//        binding.Image.setOnClickListener {
+//
+//            val moveCamera = Intent(activity, CameraActivity::class.java)
+//            startActivity(moveCamera)
+//        }
+
+        binding.editProfile.setOnClickListener {
+
+            activity?.let { it1 ->
+                MaterialAlertDialogBuilder(it1)
+                    .setTitle("Edit Profile")
+                    .setNegativeButton("Edit Data") { dialog, which ->
+                        val moveEdit = Intent(activity, EditActivity::class.java)
+                        startActivity(moveEdit)
+                    }
+                    .setPositiveButton("Edit Image") { dialog, which ->
+                        val moveCamera = Intent(activity, CameraActivity::class.java)
+                        startActivity(moveCamera)
+                    }
+                    .show()
+            }
+
+
         }
     }
 
@@ -82,11 +101,6 @@ class ProfileFragment : Fragment() {
             binding.noTelp.setText(user?.noTelp)
             binding.tglLahir.setText(user?.date)
 
-            binding.editProfile.setOnClickListener {
-                val moveEdit = Intent(activity, EditActivity::class.java)
-                startActivity(moveEdit)
-//                activity?.finish()
-            }
 
         }
     }
