@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
 
+
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
@@ -62,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener {
+
 
             CoroutineScope(Dispatchers.IO).launch {
                 val users = db.userDao().getUserLogin(binding.inputUsername.text.toString(),binding.inputPassword.text.toString())

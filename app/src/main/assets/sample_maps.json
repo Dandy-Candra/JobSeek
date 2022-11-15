@@ -13,13 +13,24 @@
     {
       "geometry": {
         "location":{
-          "lat" : -7.767455895358381,
-          "lng" : 110.4074739833125
+          "lat" : -7.779866877418835,
+          "lng" : 110.41479279469114
         }
       },
-      "name": "Kos Andre",
-      "vicinity": "Jl. Seturan 3 no 15a"
+      "name": "Kantor Jobseek 1",
+      "vicinity": "Jl. Babarsari, Janti, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
+    },
+    {
+      "geometry": {
+        "location":{
+          "lat" : -7.781529074629199,
+          "lng" : 110.41631882939492
+        }
+      },
+      "name": "Kantor Jobseek 2",
+      "vicinity": "Jl. Tambak bayan, Janti, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281"
     }
+
   ],
   "status": "OK"
 }
