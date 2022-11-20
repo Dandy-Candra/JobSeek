@@ -30,7 +30,6 @@ import java.nio.charset.StandardCharsets
 
 
 class InputExperienceFragment : Fragment() {
-    val db by lazy { activity?.let { TubesDB(it) } }
     private val id = "idKey"
     private val myPreference = "myPref"
     var sharedPreferences: SharedPreferences? = null
@@ -153,7 +152,61 @@ class InputExperienceFragment : Fragment() {
         queue!!.add(stringRequest)
     }
 
+    private fun updateExperiences(id: Int ,idUser: Int){
+        val experience = Experience(
+            id,
+            binding.editTitle.text.toString(),
+            binding.editDescription.text.toString(),
+            idUser
+        )
 
+        val stringRequest: StringRequest =
+            object: StringRequest(Method.PUT, TubesApi.UPDATE_URL_EXPERIENCE + id, Response.Listener { response ->
+                val gson = Gson()
+
+                val jsonObject = JSONObject(response)
+
+                val jsonArray = jsonObject.getJSONObject("data")
+                val experience = gson.fromJson(jsonArray.toString(), Experience::class.java)
+
+                if(experience != null)
+                    Toast.makeText(fActivity, "Success Update", Toast.LENGTH_SHORT).show()
+
+
+            }, Response.ErrorListener { error ->
+                try{
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        fActivity,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception){
+                    Toast.makeText(fActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }){
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    val gson = Gson()
+                    val requestBody = gson.toJson(experience)
+                    return requestBody.toByteArray(StandardCharsets.UTF_8)
+                }
+
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+            }
+
+        queue!!.add(stringRequest)
+    }
 
     private fun deleteExperiences(id: Int) {
         val stringRequest: StringRequest =

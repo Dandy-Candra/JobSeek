@@ -12,20 +12,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.FragmentSkillBinding
 import com.android.tubes_pbp.user.Experience
+import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 
 class SkillFragment : Fragment() {
-    val db by lazy { activity?.let { TubesDB(it) } }
+
     private val id = "idKey"
     private var idNotif = 1
     private val myPreference = "myPref"
@@ -109,7 +117,40 @@ class SkillFragment : Fragment() {
 
     }
 
+    private fun getExperiences(idUser: Int){
+        binding.srExperience!!.isRefreshing = true
+        val stringRequest : StringRequest = object:
+            StringRequest(Method.GET, TubesApi.GET_BY_ID_URL_EXPERIENCE + idUser, Response.Listener { response ->
+                val gson = Gson()
 
+                val jsonObject = JSONObject(response)
+                val jsonArray = jsonObject.getJSONArray("data")
+                var experience : Array<Experience> = gson.fromJson(jsonArray.toString(), Array<Experience>::class.java)
+
+                adapter!!.setData(experience)
+                adapter!!.filter.filter(binding.svExperience!!.query)
+                binding.srExperience!!.isRefreshing = false
+            }, Response.ErrorListener { error ->
+                binding.srExperience!!.isRefreshing = false
+                try {
+                    val responseBody =
+                        String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(requireActivity(), errors.getString("message"), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception){
+                    Toast.makeText(requireActivity(), e.message, Toast.LENGTH_SHORT).show()
+                }
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Accept"] = "application/json"
+                return headers
+            }
+
+        }
+        queue!!.add(stringRequest)
+    }
 
 
 
