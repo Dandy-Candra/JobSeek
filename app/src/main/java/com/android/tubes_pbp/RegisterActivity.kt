@@ -13,17 +13,28 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
+import com.android.tubes_pbp.user.Experience
 import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -34,6 +45,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private val CHANNEL_ID_REGISTER = "channel_notification_01"
     private val notificationId1 = 101
+    private var queue: RequestQueue? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +56,13 @@ class RegisterActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        queue = Volley.newRequestQueue(this)
         val cal = Calendar.getInstance()
         val myYear = cal.get(Calendar.YEAR)
         val myMonth = cal.get(Calendar.MONTH)
         val myDay = cal.get(Calendar.DAY_OF_MONTH)
 
-        val intent = Intent(this, LoginActivity::class.java)
+
 
         binding.btnLogin.setOnClickListener {
             startActivity(intent)
@@ -62,34 +76,9 @@ class RegisterActivity : AppCompatActivity() {
                 bundle.putString("password",binding.inputPassword.text.toString())
                 intent.putExtra("registerBundle",bundle)
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
-                    if(users==null) access = true
-                    withContext(Dispatchers.Main) {
-                        if(access == true){
-                            CoroutineScope(Dispatchers.IO).launch {
-                                db.userDao().addUser(
-                                    User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
-                                        binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()  )
-                                )
-                            }
 
-                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
-                            createNotificationChannel()
-                            sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
-
-                            startActivity(intent)
-                            finish()
-                        }else{
-                            binding.layoutUsername.setError("Username Already Exist!")
-                            access = false
-                        }
-                    }
-
-
-                }
-
-
+                createUser(User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
+                    binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()))
 
             } else {
                 if (binding.inputUsername.text.toString().isEmpty()){
@@ -177,7 +166,61 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    private fun createUser(user: User){
 
+        val stringRequest: StringRequest =
+            object: StringRequest(Method.POST, TubesApi.ADD_URL_USER, Response.Listener { response ->
+
+                val jsonObject = JSONObject(response)
+
+                val status = jsonObject.getInt("status")
+
+                if(status == 1){
+                    Toast.makeText(this, "Register User Success", Toast.LENGTH_SHORT).show()
+                    val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
+                    createNotificationChannel()
+                    sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
+
+                    finish()
+                }else{
+                    binding.layoutUsername.error = "Username already exist"
+                }
+
+
+            }, Response.ErrorListener { error ->
+                try{
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        this,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception){
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }){
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    val gson = Gson()
+                    val requestBody = gson.toJson(user)
+                    return requestBody.toByteArray(StandardCharsets.UTF_8)
+                }
+
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+            }
+
+        queue!!.add(stringRequest)
+    }
 
 
 }

@@ -29,7 +29,29 @@
             android:layout_height="wrap_content"
             android:text="Tuliskan pengalamanmu disini"
             android:textSize="15sp" />
+
+        <SearchView
+            android:id="@+id/sv_experience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Cari"
+            android:iconifiedByDefault="false"
+            />
     </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/sr_experience"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_experience"
@@ -43,6 +65,8 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"
         tools:listitem="@layout/rv_item_experience" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add"

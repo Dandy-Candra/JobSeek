@@ -8,30 +8,44 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
+import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
+import com.android.tubes_pbp.user.Experience
 import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 class LoginActivity : AppCompatActivity() {
-    val db by lazy { TubesDB(this) }
     private lateinit var binding: ActivityLoginBinding
     lateinit var lBundle : Bundle
 
     private val myPreference = "myPref"
     private val key = "nameKey"
     private val id = "idKey"
+    private val name = "nameKey"
     private var access = false
     var sharedPreferences: SharedPreferences? = null
+    private var queue: RequestQueue? = null
+    var moveHome : Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
 
+        queue = Volley.newRequestQueue(this)
 
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -51,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        val moveHome = Intent(this, HomeActivity::class.java)
+        moveHome = Intent(this, HomeActivity::class.java)
         if(intent.getBundleExtra("registerBundle")!=null){
             lBundle = intent.getBundleExtra("registerBundle")!!
             binding.inputUsername.setText(lBundle.getString("username"))
@@ -64,51 +78,83 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
 
+                getUser()
 
-            CoroutineScope(Dispatchers.IO).launch {
-                val users = db.userDao().getUserLogin(binding.inputUsername.text.toString(),binding.inputPassword.text.toString())
-                Log.d("LoginActivity","dbResponse: $users")
+        }
+
+    }
+
+    private fun getUser(){
+
+        val stringRequest : StringRequest = object:
+            StringRequest(Method.POST, TubesApi.LOGIN_URL_USER, Response.Listener { response ->
+                val gson = Gson()
+
+                val jsonObject = JSONObject(response)
+                val jsonArray = jsonObject.getJSONObject("user")
+                val user = gson.fromJson(jsonArray.toString(), User::class.java)
 
 
-                    if(users != null){
+                    if(user != null){
                         val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-                        editor.putString(id, users.id.toString())
+                        editor.putString(id, user.id.toString())
+                        editor.putString(name, user.username)
                         editor.apply()
                         access = true
                     }
 
 
-                withContext(Dispatchers.Main){
-                    if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){
-                        access = false
+                if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){
+                    access = false
 
-                        startActivity(moveHome)
-                        finish()
+                    startActivity(moveHome)
+                    finish()
+                }else{
+
+                    if(binding.inputUsername.text.toString().isEmpty()){
+                        binding.layoutUsername.setError("Username Harus Diisi")
                     }else{
-                        if(binding.inputUsername.text.toString().isEmpty()){
-                            binding.layoutUsername.setError("Username Harus Diisi")
-                        }else{
-                            binding.layoutUsername.setError("Username Salah")
-                        }
-
-                        if(binding.inputPassword.text.toString().isEmpty()){
-                            binding.layoutPassword.setError("Password Harus Diisi")
-                        }else{
-                            binding.layoutPassword.setError("Password Salah")
-                        }
-
-
-
+                        binding.layoutUsername.setError("Username Salah")
                     }
+
+                    if(binding.inputPassword.text.toString().isEmpty()){
+                        binding.layoutPassword.setError("Password Harus Diisi")
+                    }else{
+                        binding.layoutPassword.setError("Password Salah")
+                    }
+
+
+
                 }
 
+            }, Response.ErrorListener { error ->
 
-
+                try {
+                    val responseBody =
+                        String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    binding.layoutUsername.setError("Username Salah")
+                    binding.layoutPassword.setError("Password Salah")
+                    Toast.makeText(this, errors.getString("message"), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception){
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Accept"] = "application/json"
+                return headers
             }
 
-
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["username"] = binding.inputUsername.text.toString()
+                params["password"] = binding.inputPassword.text.toString()
+                return params
+            }
 
         }
-
+        queue!!.add(stringRequest)
     }
 }

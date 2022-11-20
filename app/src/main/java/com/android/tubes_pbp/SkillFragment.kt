@@ -7,26 +7,30 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.tubes_pbp.databinding.FragmentInputExperienceBinding
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.FragmentSkillBinding
 import com.android.tubes_pbp.user.Experience
 import com.android.tubes_pbp.user.TubesDB
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 
 class SkillFragment : Fragment() {
@@ -38,6 +42,8 @@ class SkillFragment : Fragment() {
     private var _binding: FragmentSkillBinding? = null
     private val binding get() = _binding!!
     private val CHANNEL_ID_2 = "channel_notification_skill"
+    private var queue: RequestQueue? = null
+    private var adapter: ExperienceAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,15 +57,18 @@ class SkillFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createNotificationChannel()
+        //this on fragment
+
+        queue = Volley.newRequestQueue(requireActivity())
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         val idUser = sharedPreferences!!.getString(id, "")!!.toInt()
         val bundle = Bundle()
         val secondFragment = InputExperienceFragment()
-        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
+        val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.layout_fragment, secondFragment)
         val layoutManager = LinearLayoutManager(context)
-        val adapter: ExperienceAdapter =
-            ExperienceAdapter(arrayListOf(), object : ExperienceAdapter.OnAdapterListener {
+        adapter =
+            ExperienceAdapter(listOf(), object : ExperienceAdapter.OnAdapterListener {
                 override fun onClick(experience: Experience) {
                     sendNotification(idNotif, experience.title, experience.description)
                     idNotif++
@@ -76,6 +85,17 @@ class SkillFragment : Fragment() {
                 }
             })
 
+        binding.svExperience?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter!!.filter.filter(p0)
+                return false
+            }
+        })
+
         val rvLowongan: RecyclerView = binding.rvExperience
 
         rvLowongan.layoutManager = layoutManager
@@ -83,13 +103,10 @@ class SkillFragment : Fragment() {
         rvLowongan.setHasFixedSize(true)
 
         rvLowongan.adapter = adapter
-        CoroutineScope(Dispatchers.IO).launch {
-            val experiences = db?.experienceDao()?.getExperiencesById(idUser)
-            Log.d("MainActivity", "dbResponse: $experiences")
-            withContext(Dispatchers.Main) {
-                adapter.setData(experiences!!)
-            }
-        }
+        getExperiences(idUser)
+
+        binding.srExperience?.setOnRefreshListener (SwipeRefreshLayout.OnRefreshListener { getExperiences(idUser) })
+
 
 
         binding.btnAdd.setOnClickListener {
@@ -99,7 +116,43 @@ class SkillFragment : Fragment() {
 
         }
 
+    }
 
+
+
+    private fun getExperiences(idUser: Int){
+        binding.srExperience!!.isRefreshing = true
+        val stringRequest : StringRequest = object:
+            StringRequest(Method.GET, TubesApi.GET_BY_ID_URL_EXPERIENCE + idUser, Response.Listener { response ->
+                val gson = Gson()
+
+                val jsonObject = JSONObject(response)
+                val jsonArray = jsonObject.getJSONArray("data")
+                var experience : Array<Experience> = gson.fromJson(jsonArray.toString(), Array<Experience>::class.java)
+
+                adapter!!.setData(experience)
+                adapter!!.filter.filter(binding.svExperience!!.query)
+                binding.srExperience!!.isRefreshing = false
+            }, Response.ErrorListener { error ->
+                binding.srExperience!!.isRefreshing = false
+                try {
+                    val responseBody =
+                        String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(requireActivity(), errors.getString("message"), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception){
+                    Toast.makeText(requireActivity(), e.message, Toast.LENGTH_SHORT).show()
+                }
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Accept"] = "application/json"
+                return headers
+            }
+
+        }
+        queue!!.add(stringRequest)
     }
 
     private fun createNotificationChannel() {

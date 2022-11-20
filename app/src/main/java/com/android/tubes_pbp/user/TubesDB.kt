@@ -6,13 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [User::class,Experience::class],
+    entities = [User::class],
     version = 1
 )
 abstract class TubesDB: RoomDatabase() {
 
     abstract fun userDao() : UserDao
-    abstract fun experienceDao() : ExperienceDao
 
     companion object {
         @Volatile private var instance : TubesDB? = null
