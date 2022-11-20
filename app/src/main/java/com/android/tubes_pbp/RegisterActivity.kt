@@ -7,23 +7,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
-import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -34,6 +27,8 @@ class RegisterActivity : AppCompatActivity() {
 
     private val CHANNEL_ID_REGISTER = "channel_notification_01"
     private val notificationId1 = 101
+    private var queue: RequestQueue? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +38,13 @@ class RegisterActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        queue = Volley.newRequestQueue(this)
         val cal = Calendar.getInstance()
         val myYear = cal.get(Calendar.YEAR)
         val myMonth = cal.get(Calendar.MONTH)
         val myDay = cal.get(Calendar.DAY_OF_MONTH)
 
-        val intent = Intent(this, LoginActivity::class.java)
+
 
         binding.btnLogin.setOnClickListener {
             startActivity(intent)
@@ -62,34 +58,9 @@ class RegisterActivity : AppCompatActivity() {
                 bundle.putString("password",binding.inputPassword.text.toString())
                 intent.putExtra("registerBundle",bundle)
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val users = db.userDao().getUserByUsername(binding.inputUsername.text.toString())
-                    if(users==null) access = true
-                    withContext(Dispatchers.Main) {
-                        if(access == true){
-                            CoroutineScope(Dispatchers.IO).launch {
-                                db.userDao().addUser(
-                                    User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
-                                        binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()  )
-                                )
-                            }
 
-                            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
-                            createNotificationChannel()
-                            sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
-
-                            startActivity(intent)
-                            finish()
-                        }else{
-                            binding.layoutUsername.setError("Username Already Exist!")
-                            access = false
-                        }
-                    }
-
-
-                }
-
-
+                createUser(User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
+                    binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()))
 
             } else {
                 if (binding.inputUsername.text.toString().isEmpty()){

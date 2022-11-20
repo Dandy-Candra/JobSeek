@@ -91,31 +91,7 @@
                 android:fontFamily="@font/poppins" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="307dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:hint="Password"
-            android:textColorHint="#EAE3D2"
-            app:boxStrokeColor="#EAE3D2"
-            app:endIconMode="password_toggle"
-            app:hintTextColor="#1C3879"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
-            app:layout_constraintVertical_bias="0.0"
-            app:startIconDrawable="@drawable/ic_lock_24">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutTanggalLahir"
@@ -130,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutPassword"
+            app:layout_constraintTop_toBottomOf="@+id/layoutEmail"
             app:layout_constraintVertical_bias="0.0"
             app:startIconDrawable="@drawable/ic_baseline_date_range_24">
 

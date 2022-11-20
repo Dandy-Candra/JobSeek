@@ -11,16 +11,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.FragmentInputExperienceBinding
 import com.android.tubes_pbp.user.Experience
-import com.android.tubes_pbp.user.TubesDB
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.android.volley.AuthFailureError
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import org.json.JSONObject
+import java.nio.charset.StandardCharsets
 
 
 class InputExperienceFragment : Fragment() {
@@ -32,7 +38,8 @@ class InputExperienceFragment : Fragment() {
     private val binding get() = _binding!!
     private val CHANNEL_ID_SAVE = "channel_notification_save"
     private val notificationId = 103
-
+    private var queue: RequestQueue? = null
+    private var fActivity: FragmentActivity? = null
 
 
     override fun onCreateView(
@@ -47,6 +54,8 @@ class InputExperienceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createNotificationChannel()
+        fActivity = requireActivity()
+        queue = Volley.newRequestQueue(requireActivity())
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
         if(arguments?.getString("key")=="update"){
@@ -55,49 +64,141 @@ class InputExperienceFragment : Fragment() {
             binding.editDescription.setText(arguments?.getString("description"))
             val id = requireArguments().getInt("id")
             binding.buttonSave.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    db?.experienceDao()?.updateExperience(Experience(id,binding.editTitle.text.toString(),binding.editDescription.text.toString(),idUser))
 
-                    withContext(Dispatchers.Main){
-                        val secondFragment = SkillFragment()
-                        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-                        transaction.replace(R.id.layout_fragment, secondFragment)
-                        transaction.commit()
-                    }
-                }
+                updateExperiences(id,idUser)
+                val secondFragment = SkillFragment()
+                val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, secondFragment)
+                transaction.commit()
             }
 
             binding.buttonDelete.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    db?.experienceDao()?.deleteExperience(Experience(id,
-                        arguments?.getString("title")!!, arguments?.getString("description")!!,idUser
-                    ))
 
-                    withContext(Dispatchers.Main){
-                        val secondFragment = SkillFragment()
-                        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-                        transaction.replace(R.id.layout_fragment, secondFragment)
-                        transaction.commit()
-                    }
-                }
+                deleteExperiences(id)
+
             }
         }else{
             binding.title.setText("Add Experience")
             binding.buttonDelete.visibility = View.GONE
             binding.buttonSave.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    db?.experienceDao()?.addExperience(Experience(0,binding.editTitle.text.toString(),binding.editDescription.text.toString(),idUser))
 
-                    withContext(Dispatchers.Main){
-                        sendNotification2(binding.editTitle.text.toString(),binding.editDescription.text.toString())
-                        val secondFragment = SkillFragment()
-                        val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-                        transaction.replace(R.id.layout_fragment, secondFragment)
-                        transaction.commit()
-                    }
-                }
+                createExperiences(idUser)
+
+                sendNotification2(binding.editTitle.text.toString(),binding.editDescription.text.toString())
+
             }
         }
+
+
+    }
+
+    private fun createExperiences(idUser: Int){
+        val experience = Experience(
+            0,
+            binding.editTitle.text.toString(),
+            binding.editDescription.text.toString(),
+            idUser
+        )
+
+        val stringRequest: StringRequest =
+            object: StringRequest(Method.POST, TubesApi.ADD_URL_EXPERIENCE, Response.Listener { response ->
+                val gson = Gson()
+
+                val jsonObject = JSONObject(response)
+
+                val jsonArray = jsonObject.getJSONObject("data")
+                val experience = gson.fromJson(jsonArray.toString(), Experience::class.java)
+
+                if(experience != null)
+                    Toast.makeText(fActivity, "Success", Toast.LENGTH_SHORT).show()
+
+                val secondFragment = SkillFragment()
+                val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.layout_fragment, secondFragment)
+                transaction.commit()
+
+
+            }, Response.ErrorListener { error ->
+                try{
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        fActivity,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception){
+                    Toast.makeText(fActivity, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }){
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    val gson = Gson()
+                    val requestBody = gson.toJson(experience)
+                    return requestBody.toByteArray(StandardCharsets.UTF_8)
+                }
+
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+            }
+
+        queue!!.add(stringRequest)
+    }
+
+
+
+    private fun deleteExperiences(id: Int) {
+        val stringRequest: StringRequest =
+            object : StringRequest(
+                Method.DELETE,
+                TubesApi.DELETE_URL_EXPERIENCE + id,
+                Response.Listener { response ->
+                    val gson = Gson()
+
+                    val jsonObject = JSONObject(response)
+
+                    val jsonArray = jsonObject.getJSONObject("data")
+                    val experience = gson.fromJson(jsonArray.toString(), Experience::class.java)
+
+                    if (experience != null)
+                        Toast.makeText(fActivity, "Success Delete", Toast.LENGTH_SHORT).show()
+
+                    val secondFragment = SkillFragment()
+                    val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.layout_fragment, secondFragment)
+                    transaction.commit()
+
+                },
+                Response.ErrorListener { error ->
+                    try {
+                        val responseBody =
+                            String(error.networkResponse.data, StandardCharsets.UTF_8)
+                        val errors = JSONObject(responseBody)
+                        Toast.makeText(
+                            fActivity,
+                            errors.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(fActivity, e.message, Toast.LENGTH_SHORT).show()
+                    }
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+            }
+        queue!!.add(stringRequest)
     }
 
     private fun createNotificationChannel(){

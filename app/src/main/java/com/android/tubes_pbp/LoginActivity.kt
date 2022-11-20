@@ -7,30 +7,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
-import com.android.tubes_pbp.databinding.ActivityRegisterBinding
-import com.android.tubes_pbp.user.TubesDB
-import com.android.tubes_pbp.user.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 
 class LoginActivity : AppCompatActivity() {
-    val db by lazy { TubesDB(this) }
     private lateinit var binding: ActivityLoginBinding
     lateinit var lBundle : Bundle
 
     private val myPreference = "myPref"
     private val key = "nameKey"
     private val id = "idKey"
+    private val name = "nameKey"
     private var access = false
     var sharedPreferences: SharedPreferences? = null
+    private var queue: RequestQueue? = null
+    var moveHome : Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getSupportActionBar()?.hide()
         super.onCreate(savedInstanceState)
+
+        queue = Volley.newRequestQueue(this)
 
         sharedPreferences = getSharedPreferences(myPreference, Context.MODE_PRIVATE)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -50,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-        val moveHome = Intent(this, HomeActivity::class.java)
+        moveHome = Intent(this, HomeActivity::class.java)
         if(intent.getBundleExtra("registerBundle")!=null){
             lBundle = intent.getBundleExtra("registerBundle")!!
             binding.inputUsername.setText(lBundle.getString("username"))
@@ -63,50 +61,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
 
-            CoroutineScope(Dispatchers.IO).launch {
-                val users = db.userDao().getUserLogin(binding.inputUsername.text.toString(),binding.inputPassword.text.toString())
-                Log.d("LoginActivity","dbResponse: $users")
-
-
-                    if(users != null){
-                        val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-                        editor.putString(id, users.id.toString())
-                        editor.apply()
-                        access = true
-                    }
-
-
-                withContext(Dispatchers.Main){
-                    if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){
-                        access = false
-
-                        startActivity(moveHome)
-                        finish()
-                    }else{
-                        if(binding.inputUsername.text.toString().isEmpty()){
-                            binding.layoutUsername.setError("Username Harus Diisi")
-                        }else{
-                            binding.layoutUsername.setError("Username Salah")
-                        }
-
-                        if(binding.inputPassword.text.toString().isEmpty()){
-                            binding.layoutPassword.setError("Password Harus Diisi")
-                        }else{
-                            binding.layoutPassword.setError("Password Salah")
-                        }
-
-
-
-                    }
-                }
-
-
-
-            }
-
-
+                getUser()
 
         }
 
     }
+
+
 }
