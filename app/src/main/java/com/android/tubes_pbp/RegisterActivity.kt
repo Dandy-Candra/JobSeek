@@ -98,6 +98,62 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    private fun createUser(user: User){
+
+        val stringRequest: StringRequest =
+            object: StringRequest(Method.POST, TubesApi.ADD_URL_USER, Response.Listener { response ->
+
+                val jsonObject = JSONObject(response)
+
+                val status = jsonObject.getInt("status")
+
+                if(status == 1){
+                    Toast.makeText(this, "Register User Success", Toast.LENGTH_SHORT).show()
+                    val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
+                    createNotificationChannel()
+                    sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
+
+                    finish()
+                }else{
+                    binding.layoutUsername.error = "Username already exist"
+                }
+
+
+            }, Response.ErrorListener { error ->
+                try{
+                    val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
+                    val errors = JSONObject(responseBody)
+                    Toast.makeText(
+                        this,
+                        errors.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception){
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }){
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getBody(): ByteArray {
+                    val gson = Gson()
+                    val requestBody = gson.toJson(user)
+                    return requestBody.toByteArray(StandardCharsets.UTF_8)
+                }
+
+                override fun getBodyContentType(): String {
+                    return "application/json"
+                }
+            }
+
+        queue!!.add(stringRequest)
+    }
+
     private fun createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val name = "Notification Register"
