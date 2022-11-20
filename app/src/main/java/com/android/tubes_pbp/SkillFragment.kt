@@ -120,40 +120,7 @@ class SkillFragment : Fragment() {
 
 
 
-    private fun getExperiences(idUser: Int){
-        binding.srExperience!!.isRefreshing = true
-        val stringRequest : StringRequest = object:
-            StringRequest(Method.GET, TubesApi.GET_BY_ID_URL_EXPERIENCE + idUser, Response.Listener { response ->
-                val gson = Gson()
 
-                val jsonObject = JSONObject(response)
-                val jsonArray = jsonObject.getJSONArray("data")
-                var experience : Array<Experience> = gson.fromJson(jsonArray.toString(), Array<Experience>::class.java)
-
-                adapter!!.setData(experience)
-                adapter!!.filter.filter(binding.svExperience!!.query)
-                binding.srExperience!!.isRefreshing = false
-            }, Response.ErrorListener { error ->
-                binding.srExperience!!.isRefreshing = false
-                try {
-                    val responseBody =
-                        String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    Toast.makeText(requireActivity(), errors.getString("message"), Toast.LENGTH_SHORT).show()
-                } catch (e: Exception){
-                    Toast.makeText(requireActivity(), e.message, Toast.LENGTH_SHORT).show()
-                }
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Accept"] = "application/json"
-                return headers
-            }
-
-        }
-        queue!!.add(stringRequest)
-    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
