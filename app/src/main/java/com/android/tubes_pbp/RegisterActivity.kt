@@ -7,34 +7,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
-import com.android.tubes_pbp.user.Experience
-import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
-import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import java.nio.charset.StandardCharsets
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {

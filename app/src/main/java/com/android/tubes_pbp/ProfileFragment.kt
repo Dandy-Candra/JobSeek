@@ -1,8 +1,6 @@
 package com.android.tubes_pbp
 
-import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,19 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.recreate
-import androidx.fragment.app.FragmentTransaction
 import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.camera.CameraActivity
 import com.android.tubes_pbp.databinding.FragmentProfileBinding
-import com.android.tubes_pbp.databinding.FragmentSkillBinding
-import com.android.tubes_pbp.user.Experience
-import com.android.tubes_pbp.user.TubesDB
 import com.android.tubes_pbp.user.User
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
@@ -31,14 +21,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 

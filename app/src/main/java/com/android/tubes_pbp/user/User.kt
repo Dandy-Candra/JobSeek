@@ -3,9 +3,8 @@ package com.android.tubes_pbp.user
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-data class User (
-    @PrimaryKey(autoGenerate = true)
+
+ class User (
     val id: Int,
     val username: String,
     val email: String,

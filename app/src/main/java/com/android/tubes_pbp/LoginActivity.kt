@@ -7,26 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.widget.Toast
-import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.ActivityLoginBinding
-import com.android.tubes_pbp.databinding.ActivityRegisterBinding
-import com.android.tubes_pbp.user.Experience
-import com.android.tubes_pbp.user.TubesDB
-import com.android.tubes_pbp.user.User
-import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import java.nio.charset.StandardCharsets
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
