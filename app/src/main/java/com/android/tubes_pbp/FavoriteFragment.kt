@@ -1,14 +1,22 @@
 package com.android.tubes_pbp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.android.tubes_pbp.map.CustomInfoWindow
 import com.android.tubes_pbp.map.ModelMain
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -54,8 +62,6 @@ class FavoriteFragment : Fragment() {
         mapController.zoomTo(15)
 
         getLocationMarker()
-
-
 
     }
 
@@ -128,5 +134,9 @@ class FavoriteFragment : Fragment() {
             mapView.invalidate()
         }
     }
+
+}
+
+private fun <TResult> Task<TResult>.addOnSuccessListener(favoriteFragment: FavoriteFragment, onSuccessListener: OnSuccessListener<TResult>) {
 
 }

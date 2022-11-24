@@ -10,9 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.res.ResourcesCompat
+import com.android.tubes_pbp.PDF.PDFMaker
 import com.android.tubes_pbp.databinding.ActivityDetailLowonganBinding
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 class DetailLowongan : AppCompatActivity() {
     private lateinit var binding: ActivityDetailLowonganBinding
@@ -38,6 +42,15 @@ class DetailLowongan : AppCompatActivity() {
                     }
                     .setPositiveButton("yes") { dialog, which ->
                         sendNotification2(binding.title.text.toString(),binding.description.text.toString())
+                        MotionToast.createColorToast(this,
+                            "Lamaran Berhasil",
+                            "Silahkan Tunggu Konfirmasi, Surat Telah terdownload",
+                            MotionToastStyle.SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.LONG_DURATION,
+                            ResourcesCompat.getFont(this,R.font.poppins))
+                        PDFMaker.createPdf(this,binding.title.text.toString(),binding.description.text.toString())
+                        finish()
                     }
                     .show()
 

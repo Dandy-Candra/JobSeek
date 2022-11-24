@@ -13,7 +13,6 @@ import com.android.tubes_pbp.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
-    val db by lazy { activity?.let { TubesDB(it) } }
     private val id = "idKey"
     private val myPreference = "myPref"
     private val name = "nameKey"

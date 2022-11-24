@@ -19,7 +19,6 @@ import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 
 class EditActivity : AppCompatActivity() {
-    val db by lazy { TubesDB(this) }
     private lateinit var binding: ActivityEditBinding
     private val id = "idKey"
     private val myPreference = "myPref"
@@ -52,8 +51,6 @@ class EditActivity : AppCompatActivity() {
             }
 
         }
-
-
 
 
     }
