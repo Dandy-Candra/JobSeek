@@ -56,7 +56,7 @@ class InputExperienceFragment : Fragment() {
         fActivity = requireActivity()
         queue = Volley.newRequestQueue(requireActivity())
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-        val idUser = sharedPreferences!!.getString(id,"")!!.toInt()
+        val idUser = sharedPreferences!!.getString(id,"20")!!.toInt()
         if(arguments?.getString("key")=="update"){
             binding.title.setText("Update Experience")
             binding.editTitle.setText(arguments?.getString("title"))
@@ -120,12 +120,25 @@ class InputExperienceFragment : Fragment() {
             }, Response.ErrorListener { error ->
                 try{
                     val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        fActivity,
-                        errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if(error.networkResponse.statusCode == 400){
+                        val jsonObject = JSONObject(responseBody)
+                        val message = jsonObject.getJSONObject("message")
+                        for(i in message.keys()){
+                            if(i == "title"){
+                                binding.editTitle.error = message.getJSONArray(i).getString(0)
+                            }
+                            if(i == "description"){
+                                binding.editDescription.error = message.getJSONArray(i).getString(0)
+                            }
+                        }
+                    }else {
+                        val errors = JSONObject(responseBody)
+                        Toast.makeText(
+                            fActivity,
+                            errors.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } catch (e: Exception){
                     Toast.makeText(fActivity, e.message, Toast.LENGTH_SHORT).show()
                 }

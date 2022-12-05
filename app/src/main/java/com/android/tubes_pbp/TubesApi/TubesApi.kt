@@ -7,7 +7,7 @@ import com.android.volley.toolbox.Volley
 
 class TubesApi {
     companion object{
-        val BASE_URL = "http://192.168.88.77/API_Tubes/public/api/"
+        val BASE_URL = "http://10.53.8.22/API_Tubes/public/api/"
 
         val GET_ALL_URL_EXPERIENCE = BASE_URL + "experiences/"
         val GET_BY_ID_URL_EXPERIENCE = BASE_URL + "experiences/"

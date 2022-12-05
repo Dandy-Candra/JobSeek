@@ -59,8 +59,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnSignUp.setOnClickListener {
-            if (!binding.inputUsername.text.toString().isEmpty() && !binding.inputPassword.text.toString().isEmpty() && !binding.inputTanggalLahir.text.toString().isEmpty() &&
-                !binding.inputEmail.text.toString().isEmpty() && !binding.inputNomorTelepon.text.toString().isEmpty()){
+
                 val bundle = Bundle()
                 bundle.putString("username",binding.inputUsername.text.toString())
                 bundle.putString("password",binding.inputPassword.text.toString())
@@ -70,23 +69,7 @@ class RegisterActivity : AppCompatActivity() {
                 createUser(User(0, binding.inputUsername.text.toString(),binding.inputEmail.text.toString(),
                     binding.inputPassword.text.toString(),binding.inputTanggalLahir.text.toString(),binding.inputNomorTelepon.text.toString()))
 
-            } else {
-                if (binding.inputUsername.text.toString().isEmpty()){
-                    binding.layoutUsername.setError("Username Harus Diisi")
-                }
-                if (binding.inputPassword.text.toString().isEmpty()){
-                    binding.layoutPassword.setError("Password Harus Diisi")
-                }
-                if (binding.inputTanggalLahir.text.toString().isEmpty()){
-                    binding.layoutTanggalLahir.setError("Tanggal Lahir Harus Diiisi")
-                }
-                if (binding.inputEmail.text.toString().isEmpty()){
-                    binding.layoutEmail.setError("Email Harus Diisi")
-                }
-                if (binding.inputNomorTelepon.text.toString().isEmpty()){
-                    binding.layoutNomorTelepon.setError("Nomor Telp Harus Diiisi")
-                }
-            }
+
         }
 
         binding.inputTanggalLahir.setOnFocusChangeListener { view, b ->
@@ -108,6 +91,12 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun createUser(user: User){
 
+        binding.layoutUsername.error = null
+        binding.layoutEmail.error = null
+        binding.layoutPassword.error = null
+        binding.layoutTanggalLahir.error = null
+        binding.layoutNomorTelepon.error = null
+
         val stringRequest: StringRequest =
             object: StringRequest(Method.POST, TubesApi.ADD_URL_USER, Response.Listener { response ->
 
@@ -115,27 +104,57 @@ class RegisterActivity : AppCompatActivity() {
 
                 val status = jsonObject.getInt("status")
 
-                if(status == 1){
-                    Toast.makeText(this, "Register User Success", Toast.LENGTH_SHORT).show()
-                    val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
-                    createNotificationChannel()
-                    sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
 
-                    finish()
-                }else{
-                    binding.layoutUsername.error = "Username already exist"
-                }
+
+                    if(status == 1){
+                        Toast.makeText(this, "Register User Success", Toast.LENGTH_SHORT).show()
+                        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.icon)
+                        createNotificationChannel()
+                        sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
+
+                        finish()
+                    }else{
+                        binding.layoutUsername.error = "Username already exist"
+                    }
+
+
+
 
 
             }, Response.ErrorListener { error ->
                 try{
                     val responseBody = String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    Toast.makeText(
-                        this,
-                        errors.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if(error.networkResponse.statusCode == 400) {
+                        val jsonObject = JSONObject(responseBody)
+                        val jsonObject1 = jsonObject.getJSONObject("message")
+                        for(i in jsonObject1.keys()){
+
+                            if(i == "username"){
+                                binding.layoutUsername.error = jsonObject1.getJSONArray(i).getString(0)
+                            }
+                            if(i == "email"){
+                                binding.layoutEmail.error = jsonObject1.getJSONArray(i).getString(0)
+                            }
+                            if(i == "password"){
+                                binding.layoutPassword.error = jsonObject1.getJSONArray(i).getString(0)
+                            }
+                            if(i == "date"){
+                                binding.layoutTanggalLahir.error = jsonObject1.getJSONArray(i).getString(0)
+                            }
+                            if(i == "noTelp"){
+                                binding.layoutNomorTelepon.error = jsonObject1.getJSONArray(i).getString(0)
+                            }
+
+                        }
+                    }else{
+                        val errors = JSONObject(responseBody)
+                        Toast.makeText(
+                            this,
+                            errors.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
                 } catch (e: Exception){
                     Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                 }

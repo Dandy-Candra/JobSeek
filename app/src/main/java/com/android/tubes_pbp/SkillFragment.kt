@@ -56,15 +56,18 @@ class SkillFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createNotificationChannel()
-        //this on fragment
+        //attach this fragment to activity
+        val activity = activity as HomeActivity
+
 
         queue = Volley.newRequestQueue(requireActivity())
         sharedPreferences = activity?.getSharedPreferences(myPreference, Context.MODE_PRIVATE)
-        val idUser = sharedPreferences!!.getString(id, "")!!.toInt()
+        val idUser = sharedPreferences!!.getString(id, "20")!!.toInt()
         val bundle = Bundle()
         val secondFragment = InputExperienceFragment()
-        val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.layout_fragment, secondFragment)
+        // move fragment
+//        val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.layout_fragment, secondFragment)
         val layoutManager = LinearLayoutManager(context)
         adapter =
             ExperienceAdapter(listOf(), object : ExperienceAdapter.OnAdapterListener {
@@ -80,7 +83,8 @@ class SkillFragment : Fragment() {
                     bundle.putString("title", experience.title)
                     bundle.putString("description", experience.description)
                     secondFragment.arguments = bundle
-                    transaction.commit()
+
+                    activity.changeFragment(secondFragment)
                 }
             })
 
@@ -111,7 +115,7 @@ class SkillFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             bundle.putString("key", "add")
             secondFragment.arguments = bundle
-            transaction.commit()
+            activity.changeFragment(secondFragment)
 
         }
 

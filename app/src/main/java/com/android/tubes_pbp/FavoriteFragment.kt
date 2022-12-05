@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.android.tubes_pbp.map.CustomInfoWindow
 import com.android.tubes_pbp.map.ModelMain
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.fragment_favorite.*

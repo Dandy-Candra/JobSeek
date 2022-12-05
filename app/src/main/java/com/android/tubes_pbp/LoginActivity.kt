@@ -21,8 +21,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
@@ -51,18 +49,18 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
 
-        if(!sharedPreferences!!.contains(key)){
-            val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
-            editor.putString(key, "terisi")
-            editor.apply()
-            setContentView(R.layout.activity_splash_screen)
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                setContentView(view)
-            }, 3000)
-        }else{
+//        if(!sharedPreferences!!.contains(key)){
+//            val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
+//            editor.putString(key, "terisi")
+//            editor.apply()
+//            setContentView(R.layout.activity_splash_screen)
+//
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                setContentView(view)
+//            }, 3000)
+//        }else{
             setContentView(view)
-        }
+//        }
 
 
         moveHome = Intent(this, HomeActivity::class.java)
@@ -86,76 +84,72 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getUser(){
 
-        val stringRequest : StringRequest = object:
-            StringRequest(Method.POST, TubesApi.LOGIN_URL_USER, Response.Listener { response ->
-                val gson = Gson()
-
-                val jsonObject = JSONObject(response)
-                val jsonArray = jsonObject.getJSONObject("user")
-                val user = gson.fromJson(jsonArray.toString(), User::class.java)
+        binding.layoutUsername.error = null
+        binding.layoutPassword.error = null
 
 
-                if(user != null){
+            val stringRequest: StringRequest = object :
+                StringRequest(Method.POST, TubesApi.LOGIN_URL_USER, Response.Listener { response ->
+                    val gson = Gson()
+
+                    val jsonObject = JSONObject(response)
+                    val jsonArray = jsonObject.getJSONObject("user")
+                    val user = gson.fromJson(jsonArray.toString(), User::class.java)
+
                     val editor: SharedPreferences.Editor = sharedPreferences!!.edit()
                     editor.putString(id, user.id.toString())
                     editor.putString(name, user.username)
                     editor.apply()
-                    access = true
-                }
-
-
-                if((binding.inputUsername.text.toString() == "admin" && binding.inputPassword.text.toString() == "admin") || (access)){
-                    access = false
 
                     startActivity(moveHome)
                     finish()
-                }else{
 
-                    if(binding.inputUsername.text.toString().isEmpty()){
-                        binding.layoutUsername.setError("Username Harus Diisi")
-                    }else{
-                        binding.layoutUsername.setError("Username Salah")
+
+                }, Response.ErrorListener { error ->
+                    try {
+                        val responseBody =
+                            String(error.networkResponse.data, StandardCharsets.UTF_8)
+                        if(error.networkResponse.statusCode == 401){
+                            binding.layoutUsername.setError("Username Salah")
+                            binding.layoutPassword.setError("Password Salah")
+                        }else if(error.networkResponse.statusCode == 400){
+                            val jsonObject = JSONObject(responseBody)
+                            val jsonObject1 = jsonObject.getJSONObject("message")
+                            for(i in jsonObject1.keys()){
+
+                                if(i == "username"){
+                                    binding.layoutUsername.error = jsonObject1.getJSONArray(i).getString(0)
+                                }
+                                if(i == "password"){
+                                    binding.layoutPassword.error = jsonObject1.getJSONArray(i).getString(0)
+                                }
+                            }
+                        }else{
+                            val errors = JSONObject(responseBody)
+                            Toast.makeText(this, errors.getString("message"), Toast.LENGTH_SHORT).show()
+                        }
+
+                    } catch (e: Exception) {
+                        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                     }
-
-                    if(binding.inputPassword.text.toString().isEmpty()){
-                        binding.layoutPassword.setError("Password Harus Diisi")
-                    }else{
-                        binding.layoutPassword.setError("Password Salah")
-                    }
-
-
-
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Accept"] = "application/json"
+                    return headers
                 }
 
-            }, Response.ErrorListener { error ->
-
-                try {
-                    val responseBody =
-                        String(error.networkResponse.data, StandardCharsets.UTF_8)
-                    val errors = JSONObject(responseBody)
-                    binding.layoutUsername.setError("Username Salah")
-                    binding.layoutPassword.setError("Password Salah")
-                    Toast.makeText(this, errors.getString("message"), Toast.LENGTH_SHORT).show()
-                } catch (e: Exception){
-                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                override fun getParams(): Map<String, String> {
+                    val params = HashMap<String, String>()
+                    params["username"] = binding.inputUsername.text.toString()
+                    params["password"] = binding.inputPassword.text.toString()
+                    return params
                 }
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Accept"] = "application/json"
-                return headers
-            }
 
-            override fun getParams(): Map<String, String> {
-                val params = HashMap<String, String>()
-                params["username"] = binding.inputUsername.text.toString()
-                params["password"] = binding.inputPassword.text.toString()
-                return params
             }
-
+            queue!!.add(stringRequest)
         }
-        queue!!.add(stringRequest)
-    }
+
 
 }

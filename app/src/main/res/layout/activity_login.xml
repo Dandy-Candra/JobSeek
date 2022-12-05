@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:paddingTop="120px"
     android:paddingLeft="120px"
-    android:paddingRight="120px">
+    android:paddingRight="120px"
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/logo"
@@ -75,10 +76,12 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins"
         android:text="Forgot Your Password?"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutPassword"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/btnForgotPassword"
@@ -91,6 +94,8 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textForgotPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
         app:layout_constraintStart_toEndOf="@+id/textForgotPassword"
         app:layout_constraintTop_toTopOf="@+id/textForgotPassword"
         app:layout_constraintVertical_bias="0.0" />
