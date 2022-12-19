@@ -97,4 +97,7 @@ dependencies {
     // Optional -- UI testing with Automator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
+    // dialog UI
+    implementation 'com.github.chnouman:AwesomeDialog:1.0.5'
+
 }

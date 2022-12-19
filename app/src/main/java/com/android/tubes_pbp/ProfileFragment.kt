@@ -14,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.camera.CameraActivity
 import com.android.tubes_pbp.databinding.FragmentProfileBinding
+import com.android.tubes_pbp.inputLamaran.inputLamaran
+import com.android.tubes_pbp.ulasan.ShowUlasan
 import com.android.tubes_pbp.user.User
 import com.android.volley.AuthFailureError
 import com.android.volley.RequestQueue
@@ -58,9 +60,10 @@ class ProfileFragment : Fragment() {
         btnLogOut.setOnClickListener {
             activity?.let { it1 ->
                 MaterialAlertDialogBuilder(it1)
-                    .setTitle("Apakah Anda Ingin Keluar ?")
-                    .setNegativeButton("No") { dialog, which ->
-                        // Respond to negative button press
+                    .setTitle("Apakah Anda Ingin Keluar ?, Anda dapat memberikan masukan untuk kemajuan aplikasi kami!")
+                    .setNegativeButton("Berikan Ulasan") { dialog, which ->
+                        val intent = Intent(activity, ShowUlasan::class.java)
+                        startActivity(intent)
                     }
                     .setPositiveButton("yes") { dialog, which ->
                         val moveLogin = Intent(activity, LoginActivity::class.java)
@@ -100,6 +103,11 @@ class ProfileFragment : Fragment() {
 
 
         }
+
+        binding.btnCekLamaran.setOnClickListener {
+            val moveCekLamaran = Intent(activity, inputLamaran::class.java)
+            startActivity(moveCekLamaran)
+        }
     }
 
     override fun onStart() {
@@ -111,7 +119,7 @@ class ProfileFragment : Fragment() {
         setLoading(true)
         val stringRequest : StringRequest = object:
             StringRequest(Method.GET, TubesApi.GET_BY_ID_URL_USER + idUser, Response.Listener { response ->
-                setLoading(false)
+
                 val gson = Gson()
 
                 val jsonObject = JSONObject(response)
@@ -123,6 +131,7 @@ class ProfileFragment : Fragment() {
                 binding.noTelp.setText(user.noTelp)
                 binding.tglLahir.setText(user.date)
                 pass = user.password
+                setLoading(false)
 
             }, Response.ErrorListener { error ->
                 setLoading(false)
@@ -153,9 +162,9 @@ class ProfileFragment : Fragment() {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
 
-            layoutLoading!!.animate().alpha(0f).setDuration(250).withEndAction {
-                layoutLoading!!.visibility = View.VISIBLE
-            }
+//            layoutLoading!!.animate().alpha(0f).setDuration(500).withEndAction {
+//                layoutLoading!!.visibility = View.VISIBLE
+//            }
 
         }else{
             activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

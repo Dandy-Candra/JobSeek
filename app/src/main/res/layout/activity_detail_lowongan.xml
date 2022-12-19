@@ -50,17 +50,16 @@
         android:textAlignment="textStart"/>
 
     <TextView
-        android:id="@+id/description"
-        android:layout_width="325dp"
+        android:id="@+id/posisi"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deskripsi"
-        android:textSize="15sp"
-
-
+        android:text="Posisi"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:textColor="#1C3879"/>
 
     <Button
         android:id="@+id/btnLamar"
@@ -77,6 +76,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:layout_constraintVertical_bias="0.96" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:text="Deskripsi"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/posisi"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.572" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

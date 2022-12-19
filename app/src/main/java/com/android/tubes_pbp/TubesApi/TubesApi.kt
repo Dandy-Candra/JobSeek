@@ -7,7 +7,7 @@ import com.android.volley.toolbox.Volley
 
 class TubesApi {
     companion object{
-        val BASE_URL = "http://10.53.8.22/API_Tubes/public/api/"
+        val BASE_URL = "https://davianop.com/tubes/API_Tubes/public/api/"
 
         val GET_ALL_URL_EXPERIENCE = BASE_URL + "experiences/"
         val GET_BY_ID_URL_EXPERIENCE = BASE_URL + "experiences/"
@@ -23,6 +23,15 @@ class TubesApi {
         val DELETE_URL_USER = BASE_URL + "users/"
         val LOGIN_URL_USER = BASE_URL + "users/login"
 
+        val GET_BY_ID_URL_LAMARAN = BASE_URL + "lamarans/"
+        val ADD_URL_LAMARAN = BASE_URL + "lamarans"
+        val UPDATE_URL_LAMARAN = BASE_URL + "lamarans/"
+        val DELETE_URL_LAMARAN = BASE_URL + "lamarans/"
+
+        val GET_BY_ID_URL_ULASAN = BASE_URL + "ulasans/"
+        val ADD_URL_ULASAN = BASE_URL + "ulasans"
+        val UPDATE_URL_ULASAN = BASE_URL + "ulasans/"
+        val DELETE_URL_ULASAN = BASE_URL + "ulasans/"
 
     }
 }

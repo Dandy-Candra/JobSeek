@@ -1,9 +1,11 @@
-package com.android.tubes_pbp
+package com.android.tubes_pbp.ulasan
 
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.adapters.RatingBarBindingAdapter.setRating
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
@@ -12,6 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.android.tubes_pbp.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -22,35 +25,20 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class HomeActivityTest {
+class ShowUlasanTest {
 
     @Rule
     @JvmField
-    var mActivityScenarioRule = ActivityScenarioRule(HomeActivity::class.java)
+    var mActivityScenarioRule = ActivityScenarioRule(ShowUlasan::class.java)
 
     @Test
-    fun homeActivityTest() {
-        val bottomNavigationItemView = onView(
-            allOf(
-                withId(R.id.experience), withContentDescription("Skill"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.bottom_navigation),
-                        0
-                    ),
-                    4
-                ),
-                isDisplayed()
-            )
-        )
-        bottomNavigationItemView.perform(click())
-
+    fun showUlasanTest() {
         val floatingActionButton = onView(
             allOf(
                 withId(R.id.btn_add),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.layout_fragment),
+                        withId(android.R.id.content),
                         0
                     ),
                     2
@@ -61,45 +49,53 @@ class HomeActivityTest {
         floatingActionButton.perform(click())
         onView(isRoot()).perform(waitFor(3000))
 
+
+
         val appCompatEditText = onView(
             allOf(
-                withId(R.id.edit_title),
+                withId(R.id.tv_kritik),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.layout_fragment),
+                        withId(android.R.id.content),
                         0
                     ),
-                    3
+                    5
                 ),
                 isDisplayed()
             )
         )
-        appCompatEditText.perform(replaceText("1"), closeSoftKeyboard())
+        appCompatEditText.perform(replaceText("fitur chat"), closeSoftKeyboard())
+
 
         val appCompatEditText2 = onView(
             allOf(
-                withId(R.id.edit_description),
+                withId(R.id.tv_saran),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.layout_fragment),
+                        withId(android.R.id.content),
                         0
                     ),
-                    4
+                    6
                 ),
                 isDisplayed()
             )
         )
-        appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard())
+        appCompatEditText2.perform(
+            replaceText("fitur chat dengan pengguna lain"),
+            closeSoftKeyboard()
+        )
+
+
 
         val materialButton = onView(
             allOf(
-                withId(R.id.buttonSave), withText("Simpan"),
+                withId(R.id.btnConfirm), withText("Konfirmasi"),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.layout_fragment),
+                        withId(android.R.id.content),
                         0
                     ),
-                    6
+                    7
                 ),
                 isDisplayed()
             )

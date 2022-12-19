@@ -49,13 +49,23 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tv_judul"
+                        android:id="@+id/tv_perusahaan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="@{lowongan.name}"
+                        android:text="@{lowongan.perusahaan}"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="#1C3879" />
+
+                    <TextView
+                        android:id="@+id/tv_judul"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text="@{lowongan.name}"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="#1C3879"
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/tv_details"

@@ -34,7 +34,8 @@ class FragmentLowongan : Fragment() {
         val adapter : RVlowonganAdapter = RVlowonganAdapter(Lowongan.listOfLowongan,object : RVlowonganAdapter.OnAdapterListener{
             override fun onClick(lowongan: Lowongan) {
                 val bundle = Bundle()
-                bundle.putString("title",lowongan.name)
+                bundle.putString("title",lowongan.perusahaan)
+                bundle.putString("posisi",lowongan.name)
                 bundle.putString("description",lowongan.detail)
                 bundle.putInt("photo",lowongan.photo)
                 intent.putExtra("detailLowongan",bundle)

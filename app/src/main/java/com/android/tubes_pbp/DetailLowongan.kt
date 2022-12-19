@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.android.tubes_pbp.PDF.PDFMaker
 import com.android.tubes_pbp.databinding.ActivityDetailLowonganBinding
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
+import com.android.tubes_pbp.inputLamaran.inputLamaran
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
@@ -31,6 +32,7 @@ class DetailLowongan : AppCompatActivity() {
 
         val bundle = intent.getBundleExtra("detailLowongan")
         binding.title.setText(bundle?.getString("title",""))
+        binding.posisi.setText(bundle?.getString("posisi",""))
         binding.description.setText(bundle?.getString("description",""))
         binding.image.setImageResource(bundle?.getInt("photo",0)!!)
 
@@ -41,15 +43,24 @@ class DetailLowongan : AppCompatActivity() {
                         // Respond to negative button press
                     }
                     .setPositiveButton("yes") { dialog, which ->
-                        sendNotification2(binding.title.text.toString(),binding.description.text.toString())
-                        MotionToast.createColorToast(this,
-                            "Lamaran Berhasil",
-                            "Silahkan Tunggu Konfirmasi, Surat Telah terdownload",
-                            MotionToastStyle.SUCCESS,
-                            MotionToast.GRAVITY_BOTTOM,
-                            MotionToast.LONG_DURATION,
-                            ResourcesCompat.getFont(this,R.font.poppins))
-                        PDFMaker.createPdf(this,binding.title.text.toString(),binding.description.text.toString())
+                        val intent = Intent(this, inputLamaran::class.java)
+                        val bundle = Bundle()
+                        bundle.putString("title",binding.title.text.toString())
+                        bundle.putString("posisi",binding.posisi.text.toString())
+                        bundle.putString("description",binding.description.text.toString())
+                        intent.putExtra("detailLamaran",bundle)
+                        startActivity(intent)
+
+
+//                        sendNotification2(binding.title.text.toString(),binding.description.text.toString())
+//                        MotionToast.createColorToast(this,
+//                            "Lamaran Berhasil",
+//                            "Silahkan Tunggu Konfirmasi, Surat Telah terdownload",
+//                            MotionToastStyle.SUCCESS,
+//                            MotionToast.GRAVITY_BOTTOM,
+//                            MotionToast.LONG_DURATION,
+//                            ResourcesCompat.getFont(this,R.font.poppins))
+//                        PDFMaker.createPdf(this,binding.title.text.toString(),binding.description.text.toString())
                         finish()
                     }
                     .show()

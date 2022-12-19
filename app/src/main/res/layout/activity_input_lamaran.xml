@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".inputLamaran.inputLamaran"
+    android:background="@color/white"
+    >
+
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="287dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.636"
+        app:srcCompat="@drawable/cloud4" />
+
+    <TextView
+            android:id="@+id/nama_perusahaan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Nama Perusahaan"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/posisi_pekerjaan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Posisi Pekerjaan"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nama_perusahaan" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="330dp"
+        android:layout_height="212dp"
+        android:layout_marginBottom="308dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/lookingjob" />
+
+    <EditText
+        android:id="@+id/alasan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Alasan Mendaftar?"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.685" />
+
+    <EditText
+        android:id="@+id/skill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="skill pada jobdesk ini? (1-10)"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alasan"
+        app:layout_constraintVertical_bias="0.092" />
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="14dp"
+            android:text="Konfirmasi"
+            app:layout_constraintEnd_toEndOf="@+id/skill"
+            app:layout_constraintTop_toBottomOf="@+id/skill" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:text="Batal"
+            android:textColor="#EA4747"
+            app:layout_constraintStart_toStartOf="@+id/skill"
+            app:layout_constraintTop_toTopOf="@+id/btnConfirm"
+            app:strokeColor="#EA4747" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:text="Delete"
+        android:textColor="#EA4747"
+        app:layout_constraintStart_toStartOf="@+id/skill"
+        app:layout_constraintTop_toTopOf="@+id/btnConfirm"
+        app:strokeColor="#EA4747" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

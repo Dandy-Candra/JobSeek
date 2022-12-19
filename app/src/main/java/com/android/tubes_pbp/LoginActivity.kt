@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.awesomedialog.*
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
@@ -110,8 +111,24 @@ class LoginActivity : AppCompatActivity() {
                         val responseBody =
                             String(error.networkResponse.data, StandardCharsets.UTF_8)
                         if(error.networkResponse.statusCode == 401){
-                            binding.layoutUsername.setError("Username Salah")
-                            binding.layoutPassword.setError("Password Salah")
+                            val jsonObject = JSONObject(responseBody)
+                            val message = jsonObject.getString("message")
+                            if(message == "Please verify your email"){
+                                AwesomeDialog.build(this)
+                                    .title("Email Not Verified")
+                                    .body("Please Check Your Email For Verification")
+                                    .icon(R.drawable.ic_baseline_error_24)
+                                    .onNegative("OK") {
+
+                                    }
+                                    .position(AwesomeDialog.POSITIONS.CENTER)
+
+
+                            }else{
+                                binding.layoutUsername.setError("Username Salah")
+                                binding.layoutPassword.setError("Password Salah")
+                            }
+
                         }else if(error.networkResponse.statusCode == 400){
                             val jsonObject = JSONObject(responseBody)
                             val jsonObject1 = jsonObject.getJSONObject("message")

@@ -10,23 +10,26 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.android.tubes_pbp.TubesApi.TubesApi
 import com.android.tubes_pbp.databinding.ActivityRegisterBinding
 import com.android.tubes_pbp.user.User
 import com.android.volley.AuthFailureError
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.awesomedialog.*
 import com.google.gson.Gson
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.util.*
+
 
 class RegisterActivity : AppCompatActivity() {
     private var userId: Int = 0
@@ -36,6 +39,7 @@ class RegisterActivity : AppCompatActivity() {
     private val CHANNEL_ID_REGISTER = "channel_notification_01"
     private val notificationId1 = 101
     private var queue: RequestQueue? = null
+
 
 
 
@@ -100,6 +104,7 @@ class RegisterActivity : AppCompatActivity() {
         val stringRequest: StringRequest =
             object: StringRequest(Method.POST, TubesApi.ADD_URL_USER, Response.Listener { response ->
 
+
                 val jsonObject = JSONObject(response)
 
                 val status = jsonObject.getInt("status")
@@ -112,7 +117,16 @@ class RegisterActivity : AppCompatActivity() {
                         createNotificationChannel()
                         sendNotification1(binding.inputUsername.text.toString(),Bitmap.createScaledBitmap(bitmap,300,100,false))
 
-                        finish()
+                        AwesomeDialog.build(this)
+                            .title("Registration Success")
+                            .body("Please Check Your Email For Verification")
+                            .icon(R.drawable.ic_baseline_check_circle_24)
+                            .onNegative("OK") {
+                                finish()
+                            }
+                            .position(AwesomeDialog.POSITIONS.CENTER)
+
+
                     }else{
                         binding.layoutUsername.error = "Username already exist"
                     }
@@ -178,7 +192,15 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
 
-        queue!!.add(stringRequest)
+        stringRequest.setRetryPolicy(
+            DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+        )
+            queue?.add(stringRequest)
+
     }
 
     private fun createNotificationChannel(){

@@ -3,6 +3,21 @@
   <component name="AndroidTestResultsUserPreferences">
     <option name="androidTestResultsTableState">
       <map>
+        <entry key="-1806765294">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_3_API_30" value="120" />
+                  <entry key="RR8M904CNQJ" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A507FN" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="604626157">
           <value>
             <AndroidTestResultsTableState>
@@ -10,7 +25,9 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_3_API_30" value="120" />
+                  <entry key="RR8M904CNQJ" value="120" />
                   <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A507FN" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

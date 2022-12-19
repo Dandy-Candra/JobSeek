@@ -214,12 +214,24 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btnCekLamaran"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Cek Lamaran"
+
+            android:textColor="#1C3879" />
+
+        <Button
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
             android:backgroundTint="#EA4747"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Log Out"
             android:textColor="#FFFFFF" />

@@ -65,9 +65,10 @@ class SkillFragment : Fragment() {
         val idUser = sharedPreferences!!.getString(id, "20")!!.toInt()
         val bundle = Bundle()
         val secondFragment = InputExperienceFragment()
-        // move fragment
 //        val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
 //        transaction.replace(R.id.layout_fragment, secondFragment)
+//        transaction.commit()
+
         val layoutManager = LinearLayoutManager(context)
         adapter =
             ExperienceAdapter(listOf(), object : ExperienceAdapter.OnAdapterListener {
@@ -131,6 +132,7 @@ class SkillFragment : Fragment() {
                 val jsonArray = jsonObject.getJSONArray("data")
                 var experience : Array<Experience> = gson.fromJson(jsonArray.toString(), Array<Experience>::class.java)
 
+                println(experience)
                 adapter!!.setData(experience)
                 adapter!!.filter.filter(binding.svExperience!!.query)
                 binding.srExperience!!.isRefreshing = false

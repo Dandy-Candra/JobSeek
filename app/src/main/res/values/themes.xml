@@ -53,4 +53,10 @@
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#706E6E</item>
+        <item name="colorControlActivated">#FFEB3B</item>
+    </style>
+
+
 </resources>
